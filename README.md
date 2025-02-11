@@ -1,24 +1,27 @@
-# Paystack.NET SDK
+# Paystack.NET Client
 
-Paystack.NET SDK is a .NET client, and a portable class library for [paystack.com][paystack]
+**Paystack.NET Client** is a .NET package designed to provide seamless integration with the [Paystack API][paystack]. It is a portable class library that facilitates easy access to various Paystack services, enabling developers to effortlessly manage payments, transactions, and more within their .NET applications.
+
+Whether you're building a payment gateway, managing transactions, or integrating with Paystack's rich feature set, Paystack.NET Client streamlines the process, saving you development time and effort.
+
 ## Installation
 
 Using the [.NET Core command-line interface (CLI) tools][dotnet-core-cli-tools]:
 
 ```sh
-dotnet add package Paystack.NET
+dotnet add package Paystack.NET.Client
 ```
 
 Using the [NuGet Command Line Interface (CLI)][nuget-cli]:
 
 ```sh
-nuget install Paystack.NET
+nuget install Paystack.NET.Client
 ```
 
 Using the [Package Manager Console][package-manager-console]:
 
 ```powershell
-Install-Package Paystack.NET
+Install-Package Paystack.NET.Client
 ```
 
 From within Visual Studio:

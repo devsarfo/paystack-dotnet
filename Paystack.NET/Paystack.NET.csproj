@@ -3,13 +3,13 @@
         <TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <PackageId>Paystack.NET</PackageId>
+        <PackageId>Paystack.NET.Client</PackageId>
         <Version>1.0.0</Version>
         <Authors>Bernard Sarfo Twumasi</Authors>
         <Description>.NET SDK for integrating with Paystack Payments API.</Description>
         <Copyright>Copyright 2025</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/devsarfo/Paystack.NET</RepositoryUrl>
+        <RepositoryUrl>https://github.com/devsarfo/paystack-dotnet§ </RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>Paystack, Paystack Payments, Paystack SDK, Paystack RESTful API</PackageTags>
         <Product>Paystack Standard .Net API</Product>
