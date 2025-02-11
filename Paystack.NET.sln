@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paystack.NET", "Paystack.NET\Paystack.NET.csproj", "{15FE6C76-8F3A-4DB1-9378-DEA8230D7634}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paystack.NET.Tests", "Paystack.NET.Tests\Paystack.NET.Tests.csproj", "{9F8EB822-1E87-4151-B7F6-54AA1CF112EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paystack.NET.Examples", "Paystack.NET.Examples\Paystack.NET.Examples.csproj", "{40A503E1-A250-4E86-A329-67A8DBB76464}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15FE6C76-8F3A-4DB1-9378-DEA8230D7634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15FE6C76-8F3A-4DB1-9378-DEA8230D7634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15FE6C76-8F3A-4DB1-9378-DEA8230D7634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15FE6C76-8F3A-4DB1-9378-DEA8230D7634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F8EB822-1E87-4151-B7F6-54AA1CF112EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F8EB822-1E87-4151-B7F6-54AA1CF112EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F8EB822-1E87-4151-B7F6-54AA1CF112EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F8EB822-1E87-4151-B7F6-54AA1CF112EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40A503E1-A250-4E86-A329-67A8DBB76464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40A503E1-A250-4E86-A329-67A8DBB76464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40A503E1-A250-4E86-A329-67A8DBB76464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40A503E1-A250-4E86-A329-67A8DBB76464}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

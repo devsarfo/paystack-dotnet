@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>Paystack.NET</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Bernard Sarfo Twumasi</Authors>
+        <Description>.NET SDK for integrating with Paystack Payments API.</Description>
+        <Copyright>Copyright 2025</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/devsarfo/Paystack.NET</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>Paystack, Paystack Payments, Paystack SDK, Paystack RESTful API</PackageTags>
+        <Product>Paystack Standard .Net API</Product>
+        <PackageProjectUrl>https://github.com/devsarfo/Paystack.NET</PackageProjectUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="icon.png" Pack="true" PackagePath="\" />
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+</Project>
