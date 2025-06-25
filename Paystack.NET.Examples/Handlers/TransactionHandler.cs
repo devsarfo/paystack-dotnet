@@ -8,18 +8,12 @@ namespace Paystack.NET.Examples.Handlers;
 
 public class TransactionHandler
 {
-    private readonly TransactionService _transactionService;
-
-    public TransactionHandler()
-    {
-        _transactionService = new TransactionService();
-    }
-
+    private readonly TransactionService _transactionService = new();
     
     public async Task InitializeTransaction()
     {
         var email = InputHelper.GetInput("Enter E-mail Address: ");
-        var amount = InputHelper.GetInput("Enter Amount (in Pesewa): ");
+        var amount = InputHelper.GetInput("Enter Amount (in subunit): ");
         var reference = "TEST-" + DateTime.Now.ToString("yyyyMMddHHmmss");
 
         var response = await _transactionService.Initialize(new InitializeTransactionOptions
