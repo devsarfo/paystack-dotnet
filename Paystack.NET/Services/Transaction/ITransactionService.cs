@@ -7,21 +7,21 @@ namespace Paystack.NET.Services.Transaction;
 
 public interface ITransactionService
 {
-    public Task<ApiResponse<InitializeTransactionResponse>> Initialize(InitializeTransactionOptions options);
+    public Task<ApiResponse<InitializeTransactionResponse>> InitializeAsync(InitializeTransactionOptions options);
     
-    public Task<ApiResponse<VerifyTransactionResponse>> Verify(string reference);
+    public Task<ApiResponse<VerifyTransactionResponse>> VerifyAsync(string reference);
 
-    public Task<PaginatedApiResponse<TransactionResponse>> List(ListTransactionOptions? options = null);
+    public Task<PaginatedApiResponse<TransactionResponse>> ListAsync(ListTransactionOptions? options = null);
     
-    public Task<ApiResponse<TransactionResponse>> Fetch(string id);
+    public Task<ApiResponse<TransactionResponse>> FetchAsync(string id);
     
-    public Task<ApiResponse<TransactionResponse>> ChargeAuthorization(ChargeAuthorizationOptions options);
+    public Task<ApiResponse<TransactionResponse>> ChargeAuthorizationAsync(ChargeAuthorizationOptions options);
     
-    public Task<ApiResponse<TransactionLog>> TransactionTimeline(string idOrReference);
+    public Task<ApiResponse<TransactionLog>> TransactionTimelineAsync(string idOrReference);
     
-    public Task<ApiResponse<TransactionTotalsResponse>> TransactionTotals();
+    public Task<ApiResponse<TransactionTotalsResponse>> TransactionTotalsAsync();
     
-    public Task<ApiResponse<ExportTransactionResponse>> ExportTransaction(ExportTransactionOptions? options = null);
+    public Task<ApiResponse<ExportTransactionResponse>> ExportTransactionAsync(ExportTransactionOptions? options = null);
     
-    public Task<ApiResponse<PartialDebitResponse>> PartialDebit(PartialDebitOptions options);
+    public Task<ApiResponse<PartialDebitResponse>> PartialDebitAsync(PartialDebitOptions options);
 }

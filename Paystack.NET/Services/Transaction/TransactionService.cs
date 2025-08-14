@@ -8,49 +8,49 @@ namespace Paystack.NET.Services.Transaction;
 
 public class TransactionService : BaseService, ITransactionService
 {
-    public async Task<ApiResponse<InitializeTransactionResponse>> Initialize(InitializeTransactionOptions options)
+    public async Task<ApiResponse<InitializeTransactionResponse>> InitializeAsync(InitializeTransactionOptions options)
     {
         return await PaystackClient.PostAsync<InitializeTransactionOptions, ApiResponse<InitializeTransactionResponse>>("transaction/initialize", options);
     }
     
-    public async Task<ApiResponse<VerifyTransactionResponse>> Verify(string reference)
+    public async Task<ApiResponse<VerifyTransactionResponse>> VerifyAsync(string reference)
     {
         return await PaystackClient.GetAsync<ApiResponse<VerifyTransactionResponse>>($"transaction/verify/{reference}");
     }
     
-    public async Task<PaginatedApiResponse<TransactionResponse>> List(ListTransactionOptions? options = null)
+    public async Task<PaginatedApiResponse<TransactionResponse>> ListAsync(ListTransactionOptions? options = null)
     {
         var queryParams = (options is not null) ? options.ToQueryString() : "";
         return await PaystackClient.GetAsync<PaginatedApiResponse<TransactionResponse>>($"transaction{queryParams}");
     }
     
-    public async Task<ApiResponse<TransactionResponse>> Fetch(string id)
+    public async Task<ApiResponse<TransactionResponse>> FetchAsync(string id)
     {
         return await PaystackClient.GetAsync<ApiResponse<TransactionResponse>>($"transaction/{id}");
     }
 
-    public async Task<ApiResponse<TransactionResponse>> ChargeAuthorization(ChargeAuthorizationOptions options)
+    public async Task<ApiResponse<TransactionResponse>> ChargeAuthorizationAsync(ChargeAuthorizationOptions options)
     {
         return await PaystackClient.PostAsync<object, ApiResponse<TransactionResponse>>($"transaction/charge_authorization", options);
     }
 
-    public async Task<ApiResponse<TransactionLog>> TransactionTimeline(string idOrReference)
+    public async Task<ApiResponse<TransactionLog>> TransactionTimelineAsync(string idOrReference)
     {
         return await PaystackClient.GetAsync<ApiResponse<TransactionLog>>($"transaction/timeline/{idOrReference}");
     }
 
-    public async Task<ApiResponse<TransactionTotalsResponse>> TransactionTotals()
+    public async Task<ApiResponse<TransactionTotalsResponse>> TransactionTotalsAsync()
     {
         return await PaystackClient.GetAsync<ApiResponse<TransactionTotalsResponse>>($"transaction/totals");
     }
 
-    public async Task<ApiResponse<ExportTransactionResponse>> ExportTransaction(ExportTransactionOptions? options = null)
+    public async Task<ApiResponse<ExportTransactionResponse>> ExportTransactionAsync(ExportTransactionOptions? options = null)
     {
         var queryParams = options is not null ? options.ToQueryString() : "";
         return await PaystackClient.GetAsync<ApiResponse<ExportTransactionResponse>>($"transaction/export{queryParams}");
     }
 
-    public async Task<ApiResponse<PartialDebitResponse>> PartialDebit(PartialDebitOptions options)
+    public async Task<ApiResponse<PartialDebitResponse>> PartialDebitAsync(PartialDebitOptions options)
     {
         return await PaystackClient.PostAsync<object, ApiResponse<PartialDebitResponse>>($"transaction/partial_debit", options);
     }

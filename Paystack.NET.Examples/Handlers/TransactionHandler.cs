@@ -85,7 +85,7 @@ public class TransactionHandler
         var amount = InputHelper.GetInput("Enter Amount (in subunit): ");
         var reference = "TEST-" + DateTime.Now.ToString("yyyyMMddHHmmss");
 
-        var response = await _transactionService.Initialize(new InitializeTransactionOptions
+        var response = await _transactionService.InitializeAsync(new InitializeTransactionOptions
         {
             Amount = amount,
             Email = email,
@@ -110,7 +110,7 @@ public class TransactionHandler
     private async Task VerifyTransaction()
     {
         var reference = InputHelper.GetInput("Enter Reference: ");
-        var response = await _transactionService.Verify(reference);
+        var response = await _transactionService.VerifyAsync(reference);
 
         if (response.Status)
         {
@@ -144,7 +144,7 @@ public class TransactionHandler
         var pageString = InputHelper.GetInput("Enter Page (default 1): ", true);
         var page = int.TryParse(pageString, out var parsedPage) ? parsedPage : 1;
 
-        var response = await _transactionService.List(new ListTransactionOptions
+        var response = await _transactionService.ListAsync(new ListTransactionOptions
         {
             PerPage = perPage,
             Page = page
@@ -180,7 +180,7 @@ public class TransactionHandler
     private async Task GetTransaction()
     {
         var id = InputHelper.GetInput("Enter Transaction ID: ");
-        var response = await _transactionService.Fetch(id);
+        var response = await _transactionService.FetchAsync(id);
 
         if (response.Status)
         {
@@ -212,7 +212,7 @@ public class TransactionHandler
         var amount = InputHelper.GetInput("Enter Amount (in Pesewa): ");
         var authorizationCode = InputHelper.GetInput("Enter Authorization Code: ");
 
-        var response = await _transactionService.ChargeAuthorization(new ChargeAuthorizationOptions
+        var response = await _transactionService.ChargeAuthorizationAsync(new ChargeAuthorizationOptions
         {
             Amount = amount,
             Email = email,
@@ -246,7 +246,7 @@ public class TransactionHandler
     private async Task TransactionTimeline()
     {
         var idOrReference = InputHelper.GetInput("Enter Transaction ID or Reference: ");
-        var response = await _transactionService.TransactionTimeline(idOrReference);
+        var response = await _transactionService.TransactionTimelineAsync(idOrReference);
 
         if (response.Status)
         {
@@ -278,7 +278,7 @@ public class TransactionHandler
 
     private async Task TransactionTotals()
     {
-        var response = await _transactionService.TransactionTotals();
+        var response = await _transactionService.TransactionTotalsAsync();
 
         if (response.Status)
         {
@@ -322,7 +322,7 @@ public class TransactionHandler
         var pageString = InputHelper.GetInput("Enter Page (default 1): ", true);
         var page = int.TryParse(pageString, out var parsedPage) ? parsedPage : 1;
 
-        var response = await _transactionService.ExportTransaction(new ExportTransactionOptions
+        var response = await _transactionService.ExportTransactionAsync(new ExportTransactionOptions
         {
             PerPage = perPage,
             Page = page
@@ -350,7 +350,7 @@ public class TransactionHandler
         InputHelper.GetInput("Enter Minimum Amount to Charge: ");
         var atLeast = Console.ReadLine();
 
-        var response = await _transactionService.PartialDebit(new PartialDebitOptions
+        var response = await _transactionService.PartialDebitAsync(new PartialDebitOptions
         {
             AuthorizationCode = authorizationCode,
             Currency = "GHS",
