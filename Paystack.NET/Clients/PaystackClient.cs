@@ -2,7 +2,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Paystack.NET.Configuration;
 using Paystack.NET.Exceptions;
-using Paystack.NET.Models.Common.Responses;
+using Paystack.NET.Models.Shared.Responses;
 
 namespace Paystack.NET.Clients
 {
@@ -14,14 +14,15 @@ namespace Paystack.NET.Clients
         {
             if (string.IsNullOrWhiteSpace(PaystackConfiguration.ApiKey))
             {
-                throw new InvalidOperationException("Paystack API keys must be configured before using PaystackClient.");
+                throw new InvalidOperationException(
+                    "Paystack API keys must be configured before using PaystackClient.");
             }
 
             _httpClient = httpClient ?? new HttpClient
             {
                 BaseAddress = new Uri(PaystackConfiguration.BaseUrl)
             };
-            
+
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {PaystackConfiguration.ApiKey}");
         }
 

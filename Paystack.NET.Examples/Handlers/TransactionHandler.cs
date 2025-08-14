@@ -2,15 +2,84 @@ using Newtonsoft.Json;
 using Paystack.NET.Constants;
 using Paystack.NET.Examples.Utils;
 using Paystack.NET.Models.Transactions.Options;
-using Paystack.NET.Services.Transactions;
+using Paystack.NET.Services.Transaction;
 
 namespace Paystack.NET.Examples.Handlers;
 
 public class TransactionHandler
 {
     private readonly TransactionService _transactionService = new();
-    
-    public async Task InitializeTransaction()
+
+    public async Task Init()
+    {
+        Console.WriteLine("\n--- Transactions ---");
+        Console.WriteLine("1. Initialize Transaction");
+        Console.WriteLine("2. Verify Transaction");
+        Console.WriteLine("3. List Transactions");
+        Console.WriteLine("4. Fetch Transaction");
+        Console.WriteLine("5. Charge Authorization");
+        Console.WriteLine("6. Transaction Timeline");
+        Console.WriteLine("7. Transaction Totals");
+        Console.WriteLine("8. Export Transaction");
+        Console.WriteLine("9. Partial Debit");
+        Console.Write("Select an option: ");
+
+        var choice = Console.ReadLine()?.Trim();
+
+        Console.Clear();
+
+        try
+        {
+            switch (choice)
+            {
+                case "1":
+                    Console.WriteLine("--- Initialize Transaction ---\n");
+                    await InitializeTransaction();
+                    break;
+                case "2":
+                    Console.WriteLine("--- Verify Transaction ---\n");
+                    await VerifyTransaction();
+                    break;
+                case "3":
+                    Console.WriteLine("--- List Transactions---\n");
+                    await ListTransactions();
+                    break;
+                case "4":
+                    Console.WriteLine("--- Get Transaction ---\n");
+                    await GetTransaction();
+                    break;
+                case "5":
+                    Console.WriteLine("--- Charge Authorization ---\n");
+                    await ChargeAuthorization();
+                    break;
+                case "6":
+                    Console.WriteLine("--- Transaction Timeline ---\n");
+                    await TransactionTimeline();
+                    break;
+                case "7":
+                    Console.WriteLine("--- Transaction Totals ---\n");
+                    await TransactionTotals();
+                    break;
+                case "8":
+                    Console.WriteLine("--- Export Transaction ---\n");
+                    await ExportTransaction();
+                    break;
+                case "9":
+                    Console.WriteLine("--- Partial Debit ---\n");
+                    await PartialDebit();
+                    break;
+                default:
+                    Console.WriteLine("Invalid option. Please try again.");
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"\nError: {e.Message}\n");
+        }
+    }
+
+    private async Task InitializeTransaction()
     {
         var email = InputHelper.GetInput("Enter E-mail Address: ");
         var amount = InputHelper.GetInput("Enter Amount (in subunit): ");
@@ -20,7 +89,8 @@ public class TransactionHandler
         {
             Amount = amount,
             Email = email,
-            Reference = reference
+            Reference = reference,
+            CallbackUrl = "https://webhook.site/42b1086b-4443-4e79-a7f6-61f41965fd9b"
         });
 
         if (response.Status)
@@ -37,7 +107,7 @@ public class TransactionHandler
         }
     }
 
-    public async Task VerifyTransaction()
+    private async Task VerifyTransaction()
     {
         var reference = InputHelper.GetInput("Enter Reference: ");
         var response = await _transactionService.Verify(reference);
@@ -66,11 +136,11 @@ public class TransactionHandler
         }
     }
 
-    public async Task ListTransactions()
+    private async Task ListTransactions()
     {
         var perPageString = InputHelper.GetInput("Enter Transactions Per Page (default 50): ", true);
         var perPage = int.TryParse(perPageString, out var parsedPerPage) ? parsedPerPage : 50;
-        
+
         var pageString = InputHelper.GetInput("Enter Page (default 1): ", true);
         var page = int.TryParse(pageString, out var parsedPage) ? parsedPage : 1;
 
@@ -107,7 +177,7 @@ public class TransactionHandler
         }
     }
 
-    public async Task GetTransaction()
+    private async Task GetTransaction()
     {
         var id = InputHelper.GetInput("Enter Transaction ID: ");
         var response = await _transactionService.Fetch(id);
@@ -136,12 +206,12 @@ public class TransactionHandler
         }
     }
 
-    public async Task ChargeAuthorization()
+    private async Task ChargeAuthorization()
     {
         var email = InputHelper.GetInput("Enter E-mail Address: ");
         var amount = InputHelper.GetInput("Enter Amount (in Pesewa): ");
         var authorizationCode = InputHelper.GetInput("Enter Authorization Code: ");
-        
+
         var response = await _transactionService.ChargeAuthorization(new ChargeAuthorizationOptions
         {
             Amount = amount,
@@ -173,7 +243,7 @@ public class TransactionHandler
         }
     }
 
-    public async Task TransactionTimeline()
+    private async Task TransactionTimeline()
     {
         var idOrReference = InputHelper.GetInput("Enter Transaction ID or Reference: ");
         var response = await _transactionService.TransactionTimeline(idOrReference);
@@ -206,7 +276,7 @@ public class TransactionHandler
         }
     }
 
-    public async Task TransactionTotals()
+    private async Task TransactionTotals()
     {
         var response = await _transactionService.TransactionTotals();
 
@@ -244,11 +314,11 @@ public class TransactionHandler
         }
     }
 
-    public async Task ExportTransaction()
+    private async Task ExportTransaction()
     {
         var perPageString = InputHelper.GetInput("Enter Transactions Per Page (default 50): ", true);
         var perPage = int.TryParse(perPageString, out var parsedPerPage) ? parsedPerPage : 50;
-        
+
         var pageString = InputHelper.GetInput("Enter Page (default 1): ", true);
         var page = int.TryParse(pageString, out var parsedPage) ? parsedPage : 1;
 
@@ -270,14 +340,13 @@ public class TransactionHandler
         }
     }
 
-    public async Task PartialDebit()
+    private async Task PartialDebit()
     {
-        
         var email = InputHelper.GetInput("Enter E-mail Address: ");
         var amount = InputHelper.GetInput("Enter Amount (in pesewa): ");
         var authorizationCode = InputHelper.GetInput("Enter Authorization Code: ");
         var reference = "TEST-" + DateTime.Now.ToString("yyyyMMddHHmmss");
-        
+
         InputHelper.GetInput("Enter Minimum Amount to Charge: ");
         var atLeast = Console.ReadLine();
 

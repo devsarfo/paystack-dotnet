@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Paystack.NET.Models.Customers;
+namespace Paystack.NET.Models.Customers.Entities;
 
 /// <summary>
 /// Represents a customer involved in a Paystack transaction,  

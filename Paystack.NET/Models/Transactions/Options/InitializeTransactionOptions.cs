@@ -60,7 +60,7 @@ public class InitializeTransactionOptions
     /// An array of payment channels. Default is all available channels.
     /// </summary>
     [JsonProperty("channels")]
-    public string[] Channels { get; set; } = new string[] { };
+    public string[]? Channels { get; set; }
 
     /// <summary>
     /// The transaction split code.

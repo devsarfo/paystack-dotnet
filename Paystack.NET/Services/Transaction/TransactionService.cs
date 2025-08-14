@@ -1,11 +1,10 @@
-using Paystack.NET.Models.Common.Responses;
+using Paystack.NET.Models.Shared.Responses;
 using Paystack.NET.Models.Transactions.Entities;
 using Paystack.NET.Models.Transactions.Options;
 using Paystack.NET.Models.Transactions.Responses;
-using Paystack.NET.Services._base;
 using Paystack.NET.Utils;
 
-namespace Paystack.NET.Services.Transactions;
+namespace Paystack.NET.Services.Transaction;
 
 public class TransactionService : BaseService, ITransactionService
 {
@@ -19,7 +18,7 @@ public class TransactionService : BaseService, ITransactionService
         return await PaystackClient.GetAsync<ApiResponse<VerifyTransactionResponse>>($"transaction/verify/{reference}");
     }
     
-    public async Task<PaginatedApiResponse<TransactionResponse>> List(ListTransactionOptions? options = default)
+    public async Task<PaginatedApiResponse<TransactionResponse>> List(ListTransactionOptions? options = null)
     {
         var queryParams = (options is not null) ? options.ToQueryString() : "";
         return await PaystackClient.GetAsync<PaginatedApiResponse<TransactionResponse>>($"transaction{queryParams}");
@@ -45,9 +44,9 @@ public class TransactionService : BaseService, ITransactionService
         return await PaystackClient.GetAsync<ApiResponse<TransactionTotalsResponse>>($"transaction/totals");
     }
 
-    public async Task<ApiResponse<ExportTransactionResponse>> ExportTransaction(ExportTransactionOptions? options = default)
+    public async Task<ApiResponse<ExportTransactionResponse>> ExportTransaction(ExportTransactionOptions? options = null)
     {
-        var queryParams = (options is not null) ? options.ToQueryString() : "";
+        var queryParams = options is not null ? options.ToQueryString() : "";
         return await PaystackClient.GetAsync<ApiResponse<ExportTransactionResponse>>($"transaction/export{queryParams}");
     }
 

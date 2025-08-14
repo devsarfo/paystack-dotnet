@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Paystack.NET.Models.Common.Responses;
+namespace Paystack.NET.Models.Shared.Responses;
 
 /// <summary>
 /// A generic model that represents the standard response structure from the Paystack API.

@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Paystack.NET.Models.Customers;
+using Paystack.NET.Models.Customers.Entities;
 using Paystack.NET.Models.Transactions.Entities;
 
 namespace Paystack.NET.Models.Transactions.Responses;

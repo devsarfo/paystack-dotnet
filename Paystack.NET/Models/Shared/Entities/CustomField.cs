@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Paystack.NET.Models.Common.Entities;
+namespace Paystack.NET.Models.Shared.Entities;
 
 public class CustomField
 {

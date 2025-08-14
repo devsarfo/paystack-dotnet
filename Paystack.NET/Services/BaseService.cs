@@ -1,6 +1,6 @@
 using Paystack.NET.Clients;
 
-namespace Paystack.NET.Services._base;
+namespace Paystack.NET.Services;
 
 public abstract class BaseService
 {

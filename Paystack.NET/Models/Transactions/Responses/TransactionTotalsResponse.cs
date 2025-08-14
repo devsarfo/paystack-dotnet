@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-using Paystack.NET.Models.Common.Entities;
+using Paystack.NET.Models.Shared.Entities;
 
 namespace Paystack.NET.Models.Transactions.Responses;
 

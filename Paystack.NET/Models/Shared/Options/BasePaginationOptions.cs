@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Paystack.NET.Models.Common.Options;
+namespace Paystack.NET.Models.Shared.Options;
 
 public class BasePaginationOptions
 {
