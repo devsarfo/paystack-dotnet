@@ -1,8 +1,9 @@
 using Paystack.NET.Clients;
 
-namespace Paystack.NET.Services;
-
-public abstract class BaseService
+namespace Paystack.NET.Services
 {
-    protected readonly PaystackClient PaystackClient = new();
+    public abstract class BaseService
+    {
+        protected readonly PaystackClient PaystackClient = new PaystackClient();
+    }
 }

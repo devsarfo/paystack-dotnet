@@ -1,4 +1,7 @@
+using System;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Paystack.NET.Configuration;
 using Paystack.NET.Exceptions;
@@ -32,22 +35,20 @@ namespace Paystack.NET.Clients
             return await ParseResponse<TResponse>(response);
         }
 
-        public async Task<TResponse> PostAsync<TRequest, TResponse>(string endpoint, TRequest? data = default)
+        public async Task<TResponse> PostAsync<TRequest, TResponse>(string endpoint, TRequest? data = null) where TRequest : class
         {
-            var content = data is not null
-                ? new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
-                : null;
+            var content = new StringContent(data != null ? JsonConvert.SerializeObject(data) : string.Empty,
+                Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync($"{PaystackConfiguration.BaseUrl}/{endpoint}", content);
             return await ParseResponse<TResponse>(response);
         }
 
-        public async Task<TResponse> PutAsync<TRequest, TResponse>(string endpoint, TRequest? data = default)
+        public async Task<TResponse> PutAsync<TRequest, TResponse>(string endpoint, TRequest? data = null) where TRequest : class
         {
-            var content = data is not null
-                ? new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
-                : null;
-
+            var content = new StringContent(data != null ? JsonConvert.SerializeObject(data) : string.Empty,
+                Encoding.UTF8, "application/json");
+            
             var response = await _httpClient.PutAsync($"{PaystackConfiguration.BaseUrl}/{endpoint}", content);
             return await ParseResponse<TResponse>(response);
         }

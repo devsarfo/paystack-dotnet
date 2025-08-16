@@ -1,39 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Web;
 using Newtonsoft.Json;
 
-namespace Paystack.NET.Utils;
-
-public static class QueryStringHelper
+namespace Paystack.NET.Utils
 {
-    /// <summary>
-    /// Converts an object with properties into a query string format.
-    /// Uses the JsonProperty name if available.
-    /// </summary>
-    public static string ToQueryString<T>(this T obj) where T : class
+    public static class QueryStringHelper
     {
-        var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-        var queryParams = new Dictionary<string, string>();
-
-        foreach (var prop in properties)
+        /// <summary>
+        /// Converts an object with properties into a query string format.
+        /// Uses the JsonProperty name if available.
+        /// </summary>
+        public static string ToQueryString<T>(this T obj) where T : class
         {
-            var value = prop.GetValue(obj);
-            if (value == null) continue;
+            var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var queryParams = new Dictionary<string, object>();
 
-            // Get the JsonPropertyAttribute name if it exists; otherwise, use the property name
-            var name = prop.GetCustomAttribute<JsonPropertyAttribute>()?.PropertyName ?? prop.Name;
-
-            var stringValue = value switch
+            foreach (var prop in properties)
             {
-                DateTime dt => dt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"), // Format DateTime properly
-                _ => value.ToString()
-            };
+                var value = prop.GetValue(obj);
+                if (value == null) continue;
 
-            queryParams[name] = stringValue ?? "";
+                // Get the JsonPropertyAttribute name if it exists; otherwise, use the property name
+                var name = prop.GetCustomAttribute<JsonPropertyAttribute>()?.PropertyName ?? prop.Name;
+
+                var stringValue = value switch
+                {
+                    DateTime dt => dt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"), // Format DateTime properly
+                    _ => value.ToString()
+                };
+
+                queryParams[name] = stringValue ?? "";
+            }
+
+            return queryParams.Count != 0 
+                ? "?" + string.Join("&", queryParams.Select(kvp => $"{HttpUtility.UrlEncode(kvp.Key)}={HttpUtility.UrlEncode(kvp.Value.ToString() ?? "")}")) 
+                : string.Empty;
         }
-
-        return queryParams.Count != 0 
-            ? "?" + string.Join("&", queryParams.Select(kvp => $"{HttpUtility.UrlEncode(kvp.Key)}={HttpUtility.UrlEncode(kvp.Value)}")) 
-            : string.Empty;
     }
 }
