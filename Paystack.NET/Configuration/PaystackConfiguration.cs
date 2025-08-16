@@ -1,3 +1,5 @@
+using System;
+
 namespace Paystack.NET.Configuration
 {
     public static class PaystackConfiguration
@@ -26,7 +28,7 @@ namespace Paystack.NET.Configuration
 
             if (!string.IsNullOrWhiteSpace(baseUrl))
             {
-                BaseUrl = baseUrl;
+                BaseUrl = baseUrl!;
             }
         }
     }

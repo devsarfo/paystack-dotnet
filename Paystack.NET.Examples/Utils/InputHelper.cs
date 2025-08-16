@@ -1,17 +1,18 @@
-namespace Paystack.NET.Examples.Utils;
-
-public abstract class InputHelper
+namespace Paystack.NET.Examples.Utils
 {
-    public static string GetInput(string label, bool nullable = false)
+    public abstract class InputHelper
     {
-        while (true)
+        public static string GetInput(string label, bool nullable = false)
         {
-            Console.Write(label);
-            var value = Console.ReadLine()?.Trim();
-
-            if (!string.IsNullOrEmpty(value) || nullable)
+            while (true)
             {
-                return value ?? string.Empty;
+                Console.Write(label);
+                var value = Console.ReadLine()?.Trim();
+
+                if (!string.IsNullOrEmpty(value) || nullable)
+                {
+                    return value ?? string.Empty;
+                }
             }
         }
     }

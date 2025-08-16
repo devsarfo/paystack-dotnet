@@ -1,8 +1,8 @@
 ﻿using Paystack.NET.Configuration;
 using Paystack.NET.Examples.Handlers;
-using Paystack.NET.Examples.Utils;
 
-var apiKey = InputHelper.GetInput("Enter Paystack Secret Key: ");
+//TODO: var apiKey = InputHelper.GetInput("Enter Paystack Secret Key: ");
+var apiKey = "sk_test_076787d2aa8bb3df372c8e073eab63ce6376fdfb";
 
 
 // Configure Paystack API Key
@@ -12,7 +12,8 @@ while (true)
 {
     Console.WriteLine("\n--- Paystack Test App ---");
     Console.WriteLine("1. Transactions");
-    Console.WriteLine("2. Callback (Webhook)");
+    Console.WriteLine("2. Customers");
+    Console.WriteLine("3. Callback (Webhook)");
     Console.WriteLine("Q. Quit");
     Console.Write("Select an option: ");
 
@@ -29,6 +30,10 @@ while (true)
                 await transactionHandler.Init();
                 break;
             case "2":
+                var customerHandler = new CustomerHandler();
+                await customerHandler.Init();
+                break;
+            case "3":
                 var callbackHandler = new CallbackHandler();
                 await callbackHandler.Init();
                 break;
