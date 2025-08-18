@@ -55,7 +55,7 @@ namespace Paystack.NET.Models.Plans.Entities
         /// ID of the integration this plan belongs to.
         /// </summary>
         [JsonProperty("integration")]
-        public int Integration { get; set; }
+        public long Integration { get; set; }
 
         /// <summary>
         /// The domain of the plan (e.g. test or live).

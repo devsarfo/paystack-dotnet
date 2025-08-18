@@ -14,7 +14,8 @@ while (true)
     Console.WriteLine("1. Transactions");
     Console.WriteLine("2. Customers");
     Console.WriteLine("3. Plans");
-    Console.WriteLine("4. Callback (Webhook)");
+    Console.WriteLine("4. Subscriptions");
+    Console.WriteLine("5. Callback (Webhook)");
     Console.WriteLine("Q. Quit");
     Console.Write("Select an option: ");
 
@@ -39,6 +40,10 @@ while (true)
                 await planHandler.Init();
                 break;
             case "4":
+                var subscriptionHandler = new SubscriptionHandler();
+                await subscriptionHandler.Init();
+                break;
+            case "5":
                 var callbackHandler = new CallbackHandler();
                 await callbackHandler.Init();
                 break;
