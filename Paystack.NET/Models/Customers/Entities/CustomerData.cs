@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Paystack.NET.Models.Transactions.Entities;
 
 namespace Paystack.NET.Models.Customers.Entities
@@ -13,13 +14,13 @@ namespace Paystack.NET.Models.Customers.Entities
         /// A list of transactions associated with the customer.
         /// </summary>
         [JsonProperty("transactions")]
-        public List<object> Transactions { get; set; } = new List<object>();
+        public List<JToken> Transactions { get; set; } = new List<JToken>();
 
         /// <summary>
         /// A list of subscriptions associated with the customer.
         /// </summary>
         [JsonProperty("subscriptions")]
-        public List<object> Subscriptions { get; set; } = new List<object>();
+        public List<JToken> Subscriptions { get; set; } = new List<JToken>();
 
         /// <summary>
         /// A list of payment authorizations linked to the customer.
@@ -37,7 +38,7 @@ namespace Paystack.NET.Models.Customers.Entities
         /// Total transaction value grouped by currency.
         /// </summary>
         [JsonProperty("total_transaction_value")]
-        public List<object> TotalTransactionValue { get; set; } = new List<object>();
+        public List<JToken> TotalTransactionValue { get; set; } = new List<JToken>();
 
         /// <summary>
         /// Indicates whether the customer has been identified (KYC).

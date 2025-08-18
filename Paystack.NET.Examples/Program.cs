@@ -13,7 +13,8 @@ while (true)
     Console.WriteLine("\n--- Paystack Test App ---");
     Console.WriteLine("1. Transactions");
     Console.WriteLine("2. Customers");
-    Console.WriteLine("3. Callback (Webhook)");
+    Console.WriteLine("3. Plans");
+    Console.WriteLine("4. Callback (Webhook)");
     Console.WriteLine("Q. Quit");
     Console.Write("Select an option: ");
 
@@ -34,6 +35,10 @@ while (true)
                 await customerHandler.Init();
                 break;
             case "3":
+                var planHandler = new PlanHandler();
+                await planHandler.Init();
+                break;
+            case "4":
                 var callbackHandler = new CallbackHandler();
                 await callbackHandler.Init();
                 break;

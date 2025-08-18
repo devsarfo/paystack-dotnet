@@ -20,9 +20,9 @@ namespace Paystack.NET.Services.Customer
             return await PaystackClient.GetAsync<PaginatedApiResponse<Models.Customers.Entities.Customer>>($"customer{queryParams}");
         }
     
-        public async Task<ApiResponse<Models.Customers.Entities.CustomerData>> FetchAsync(string emailOrCode)
+        public async Task<ApiResponse<CustomerData>> FetchAsync(string emailOrCode)
         {
-            return await PaystackClient.GetAsync<ApiResponse<Models.Customers.Entities.CustomerData>>($"customer/{emailOrCode}");
+            return await PaystackClient.GetAsync<ApiResponse<CustomerData>>($"customer/{emailOrCode}");
         }
 
         public async Task<ApiResponse<Models.Customers.Entities.Customer>> UpdateAsync(string code, UpdateCustomerOptions options)

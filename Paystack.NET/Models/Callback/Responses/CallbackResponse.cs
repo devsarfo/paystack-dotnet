@@ -20,6 +20,6 @@ namespace Paystack.NET.Models.Callback.Responses
         /// The consumer of this library should deserialize this into the appropriate type.
         /// </summary>
         [JsonProperty("data")]
-        public JToken Data { get; set; } = default!;
+        public JToken Data { get; set; } = null!;
     }
 }

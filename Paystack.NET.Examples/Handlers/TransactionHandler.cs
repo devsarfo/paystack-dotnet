@@ -82,7 +82,8 @@ namespace Paystack.NET.Examples.Handlers
         private async Task InitializeTransaction()
         {
             var email = InputHelper.GetInput("Enter E-mail Address: ");
-            var amount = InputHelper.GetInput("Enter Amount (in subunit): ");
+            var amountString = InputHelper.GetInput("Enter Amount (in subunit): ");
+            var amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : 500;
             var reference = "TEST-" + DateTime.Now.ToString("yyyyMMddHHmmss");
 
             var response = await _transactionService.InitializeAsync(new InitializeTransactionOptions
@@ -209,7 +210,8 @@ namespace Paystack.NET.Examples.Handlers
         private async Task ChargeAuthorization()
         {
             var email = InputHelper.GetInput("Enter E-mail Address: ");
-            var amount = InputHelper.GetInput("Enter Amount (in Pesewa): ");
+            var amountString = InputHelper.GetInput("Enter Amount (in subunit): ");
+            var amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : 500;
             var authorizationCode = InputHelper.GetInput("Enter Authorization Code: ");
 
             var response = await _transactionService.ChargeAuthorizationAsync(new ChargeAuthorizationOptions
@@ -343,7 +345,8 @@ namespace Paystack.NET.Examples.Handlers
         private async Task PartialDebit()
         {
             var email = InputHelper.GetInput("Enter E-mail Address: ");
-            var amount = InputHelper.GetInput("Enter Amount (in pesewa): ");
+            var amountString = InputHelper.GetInput("Enter Amount (in subunit): ");
+            var amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : 500;
             var authorizationCode = InputHelper.GetInput("Enter Authorization Code: ");
             var reference = "TEST-" + DateTime.Now.ToString("yyyyMMddHHmmss");
 

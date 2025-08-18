@@ -151,9 +151,9 @@ namespace Paystack.NET.Examples.Handlers
                 Console.WriteLine($"Total: {response.Data.Count}");
                 foreach (var customer in response.Data)
                 {
-                    Console.Write($"ID: {customer?.Id}");
-                    Console.Write($"\tE-mail: {customer?.Email}");
-                    Console.Write($"\tName: {customer?.FirstName} {customer?.LastName}");
+                    Console.Write($"ID: {customer.Id}");
+                    Console.Write($"\tE-mail: {customer.Email}");
+                    Console.Write($"\tName: {customer.FirstName} {customer.LastName}");
                     Console.WriteLine("");
                 }
             }
@@ -197,10 +197,10 @@ namespace Paystack.NET.Examples.Handlers
 
             var customer = search.Data!;
             var firstName = InputHelper.GetInput($"Enter First Name [{customer.FirstName}]: ", true);
-            if (string.IsNullOrEmpty(firstName)) firstName = customer.FirstName ?? string.Empty;
+            if (string.IsNullOrEmpty(firstName)) firstName = customer.FirstName;
 
             var lastName = InputHelper.GetInput($"Enter Last Name [{customer.LastName}]: ", true);
-            if (string.IsNullOrEmpty(lastName)) lastName = customer.LastName ?? string.Empty;
+            if (string.IsNullOrEmpty(lastName)) lastName = customer.LastName;
 
             var phone = InputHelper.GetInput($"Enter Phone (in int'l format) [{customer.Phone}]: ", true);
             if (string.IsNullOrEmpty(phone)) phone = customer.Phone;
@@ -245,10 +245,10 @@ namespace Paystack.NET.Examples.Handlers
 
             var customer = search.Data!;
             var firstName = InputHelper.GetInput($"Enter First Name [{customer.FirstName}]: ", true);
-            if (string.IsNullOrEmpty(firstName)) firstName = customer.FirstName ?? string.Empty;
+            if (string.IsNullOrEmpty(firstName)) firstName = customer.FirstName;
 
             var lastName = InputHelper.GetInput($"Enter Last Name [{customer.LastName}]: ", true);
-            if (string.IsNullOrEmpty(lastName)) lastName = customer.LastName ?? string.Empty;
+            if (string.IsNullOrEmpty(lastName)) lastName = customer.LastName;
 
             var type = InputHelper.GetInput($"Enter Type of Identification [{IdentificationType.BankAccount}]: ", true);
             if (string.IsNullOrEmpty(type)) type = IdentificationType.BankAccount;

@@ -14,7 +14,7 @@ namespace Paystack.NET.Models.Customers.Entities
         /// The unique identifier for the customer.
         /// </summary>
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// The first name of the customer (if available).
@@ -47,7 +47,7 @@ namespace Paystack.NET.Models.Customers.Entities
         public Dictionary<string, object> Metadata { get; set; } = new Dictionary<string, object>();
 
         /// <summary>
-        /// The domain of the customer
+        /// The domain of the customer (e.g., live, test).
         /// </summary>
         [JsonProperty("domain")]
         public string? Domain { get; set; }

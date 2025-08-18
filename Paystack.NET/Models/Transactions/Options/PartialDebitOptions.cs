@@ -23,7 +23,7 @@ namespace Paystack.NET.Models.Transactions.Options
         /// Example: 5000 for 50.00 in GHS (Ghana Cedi).
         /// </summary>
         [JsonProperty("amount")]
-        public string Amount { get; set; } = string.Empty;
+        public int Amount { get; set; }
 
         /// <summary>
         /// The email address of the customer attached to the authorization code.

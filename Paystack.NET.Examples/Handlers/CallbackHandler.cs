@@ -105,103 +105,103 @@ namespace Paystack.NET.Examples.Handlers
             switch (callback.Event)
             {
                 case CallbackEvent.ChargeDisputeCreate:
-                    // A dispute was logged against your business
+                    Console.WriteLine("[Webhook] Dispute created. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.ChargeDisputeRemind:
-                    // A logged dispute has not been resolved
+                    Console.WriteLine("[Webhook] Dispute reminder. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.ChargeDisputeResolve:
-                    // A dispute has been resolved
+                    Console.WriteLine("[Webhook] Dispute resolved. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.ChargeSuccess:
-                    // A successful charge was made
+                    Console.WriteLine("[Webhook] Charge successful. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.CustomerIdentificationFailed:
-                    // Customer ID validation has failed
+                    Console.WriteLine("[Webhook] Customer identification failed. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.CustomerIdentificationSuccess:
-                    // Customer ID validation was successful
+                    Console.WriteLine("[Webhook] Customer identification successful. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.DedicatedAccountAssignFailed:
-                    // DVA couldn't be created and assigned to a customer
+                    Console.WriteLine("[Webhook] DVA assignment failed. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.DedicatedAccountAssignSuccess:
-                    // DVA has been successfully created and assigned to a customer
+                    Console.WriteLine("[Webhook] DVA assignment succeeded. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.InvoiceCreate:
-                    // An invoice has been created for a subscription
+                    Console.WriteLine("[Webhook] Invoice created. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.InvoicePaymentFailed:
-                    // A payment for an invoice failed
+                    Console.WriteLine("[Webhook] Invoice payment failed. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.InvoiceUpdate:
-                    // An invoice has been updated (payment may have succeeded)
+                    Console.WriteLine("[Webhook] Invoice updated. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.PaymentRequestPending:
-                    // A payment request has been sent to a customer
+                    Console.WriteLine("[Webhook] Payment request pending. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.PaymentRequestSuccess:
-                    // A payment request has been paid for
+                    Console.WriteLine("[Webhook] Payment request successful. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.RefundFailed:
-                    // Refund cannot be processed; account credited with refund amount
+                    Console.WriteLine("[Webhook] Refund failed. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.RefundPending:
-                    // Refund initiated, waiting for processor response
+                    Console.WriteLine("[Webhook] Refund pending. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.RefundProcessed:
-                    // Refund successfully processed by the processor
+                    Console.WriteLine("[Webhook] Refund processed. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.RefundProcessing:
-                    // Refund has been received by the processor
+                    Console.WriteLine("[Webhook] Refund processing. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.SubscriptionCreate:
-                    // A subscription has been created
+                    Console.WriteLine("[Webhook] Subscription created. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.SubscriptionDisable:
-                    // A subscription on your account has been disabled
+                    Console.WriteLine("[Webhook] Subscription disabled. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.SubscriptionExpiringCards:
-                    // Info on subscriptions with cards expiring this month
+                    Console.WriteLine("[Webhook] Subscription with expiring cards. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.SubscriptionNotRenew:
-                    // Subscription status changed to non-renewing
+                    Console.WriteLine("[Webhook] Subscription not renewing. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.TransferFailed:
-                    // A transfer you attempted has failed
+                    Console.WriteLine("[Webhook] Transfer failed. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.TransferSuccess:
-                    // A successful transfer has been completed
+                    Console.WriteLine("[Webhook] Transfer successful. Data: " + callback.Data);
                     break;
 
                 case CallbackEvent.TransferReversed:
-                    // A transfer you attempted has been reversed
+                    Console.WriteLine("[Webhook] Transfer reversed. Data: " + callback.Data);
                     break;
 
                 default:
-                    Console.WriteLine($"[Webhook] Event: {callback.Event} not supported.");
+                    Console.WriteLine($"[Webhook] Event: {callback.Event} not supported. Data: {callback.Data}");
                     break;
             }
         }
