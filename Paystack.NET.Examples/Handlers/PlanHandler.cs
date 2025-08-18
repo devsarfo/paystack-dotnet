@@ -61,7 +61,6 @@ namespace Paystack.NET.Examples.Handlers
             var amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : 500;
             var description = InputHelper.GetInput("Enter Description: ");
             
-            
             var response = await _planService.CreateAsync(new CreatePlanOptions
             {
                 Name = name,
@@ -110,7 +109,9 @@ namespace Paystack.NET.Examples.Handlers
             var response = await _planService.ListAsync(new ListPlansOptions
             {
                 PerPage = perPage,
-                Page = page
+                Page = page,
+                Amount = amount,
+                Interval = interval
             });
             
             if (response.Status)
