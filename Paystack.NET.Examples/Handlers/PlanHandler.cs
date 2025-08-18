@@ -59,7 +59,6 @@ namespace Paystack.NET.Examples.Handlers
             var name = InputHelper.GetInput("Enter Name: ");
             var amountString = InputHelper.GetInput("Enter Amount (in subunit): ");
             var amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : 500;
-            var interval = InputHelper.GetInput("Enter Interval (daily, weekly, monthly,quarterly, biannually, annually): ");
             var description = InputHelper.GetInput("Enter Description: ");
             
             
@@ -67,7 +66,7 @@ namespace Paystack.NET.Examples.Handlers
             {
                 Name = name,
                 Amount = amount,
-                Interval = interval,
+                Interval = PlanInterval.Monthly,
                 Description = description,
                 SendInvoices = true,
                 SendSms = true
@@ -145,9 +144,9 @@ namespace Paystack.NET.Examples.Handlers
                 Console.WriteLine($"\nPlan Fetched Successfully!");
                 Console.Write($"ID: {response.Data?.Id}");
                 Console.Write($"\nCode: {response.Data?.PlanCode}");
-                Console.Write($"\nName: {response.Data?.PlanCode} {response.Data?.PlanCode}");
-                Console.Write($"\tCurrency: {response.Data?.Currency}");
-                Console.Write($"\tAmount: {response.Data?.Amount}");
+                Console.Write($"\nName: {response.Data?.Name}");
+                Console.Write($"\nCurrency: {response.Data?.Currency}");
+                Console.Write($"\nAmount: {response.Data?.Amount}");
                 Console.Write($"\nSubscriptions: {response.Data?.Subscriptions.Count}");
                 Console.WriteLine("");
                 Console.WriteLine($"JSON: {JsonConvert.SerializeObject(response.Data)}");
