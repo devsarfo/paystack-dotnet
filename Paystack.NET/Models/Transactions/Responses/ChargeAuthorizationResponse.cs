@@ -18,11 +18,11 @@ namespace Paystack.NET.Models.Transactions.Responses
         public long Id { get; set; }
 
         /// <summary>
-        /// The amount for the transaction in pesewa (GHS).
+        /// The amount for the transaction in the subunit of the supported currency.
         /// Example: 5000 for 50.00 in GHS (Ghana Cedi).
         /// </summary>
         [JsonProperty("amount")]
-        public string Amount { get; set; } = string.Empty;
+        public int Amount { get; set; }
 
         /// <summary>
         /// The currency of the transaction (e.g., "GHS").

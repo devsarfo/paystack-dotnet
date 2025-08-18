@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Paystack.NET.Models.Transactions.Entities
 {
@@ -45,7 +46,7 @@ namespace Paystack.NET.Models.Transactions.Entities
         /// A list of input parameters used for processing the transaction.
         /// </summary>
         [JsonProperty("input")]
-        public List<object> Input { get; set; } = new List<object>();
+        public List<JToken> Input { get; set; } = new List<JToken>();
 
         /// <summary>
         /// A chronological history of actions taken during the transaction process.

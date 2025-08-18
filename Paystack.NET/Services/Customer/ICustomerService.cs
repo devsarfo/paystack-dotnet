@@ -12,7 +12,7 @@ namespace Paystack.NET.Services.Customer
 
         public Task<PaginatedApiResponse<Models.Customers.Entities.Customer>> ListAsync(ListCustomersOptions? options = null);
 
-        public Task<ApiResponse<Models.Customers.Entities.CustomerData>> FetchAsync(string emailOrCode);
+        public Task<ApiResponse<CustomerData>> FetchAsync(string emailOrCode);
     
         public Task<ApiResponse<Models.Customers.Entities.Customer>> UpdateAsync(string code, UpdateCustomerOptions options);
         
