@@ -6,7 +6,6 @@ namespace Paystack.NET.Models.Shared.Responses
     /// A generic model that represents the standard response structure from the Paystack API.
     /// This is used for all API responses from Paystack, containing status, message, and the data (payload).
     /// </summary>
-    /// <typeparam name="T">The type of data contained in the response.</typeparam>
     public class ErrorResponse
     {
         /// <summary>

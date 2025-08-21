@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Paystack.NET.Models.Customers.Entities;
@@ -8,12 +9,12 @@ using Paystack.NET.Models.Transactions.Entities;
 namespace Paystack.NET.Models.Subscriptions.Entities
 {
     /// <summary>
-    /// Represents a Paystack subscription, including details about 
-    /// the customer, plan, authorization, invoices, and billing cycle.
+    /// Represents a detailed subscription object from Paystack, including 
+    /// invoices, invoice history, and other extended subscription data.
     /// </summary>
-    public class Subscription
+    public class SubscriptionData
     {
-        /// <summary>
+         /// <summary>
         /// The unique identifier for the subscription.
         /// </summary>
         [JsonProperty("id")]
@@ -30,12 +31,6 @@ namespace Paystack.NET.Models.Subscriptions.Entities
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; } = string.Empty;
-        
-        /// <summary>
-        /// The number of units subscribed to (usually 1).
-        /// </summary>
-        [JsonProperty("quantity")]
-        public int Quantity { get; set; }
 
         /// <summary>
         /// The unique subscription code assigned by Paystack.
@@ -74,10 +69,10 @@ namespace Paystack.NET.Models.Subscriptions.Entities
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
-        /// The timestamp the subscription was last updated.
+        /// The timestamp the subscription was cancelled.
         /// </summary>
-        [JsonProperty("updatedAt")]
-        public DateTime UpdatedAt { get; set; }
+        [JsonProperty("cancelledAt")]
+        public DateTime? CancelledAt { get; set; }
 
         /// <summary>
         /// The integration ID associated with the subscription.
@@ -102,7 +97,19 @@ namespace Paystack.NET.Models.Subscriptions.Entities
         /// </summary>
         [JsonProperty("customer")]
         public Customer Customer { get; set; } = new Customer();
+        
+        /// <summary>
+        /// List of invoices generated for this subscription.
+        /// </summary>
+        [JsonProperty("invoices")]
+        public List<JToken> Invoices { get; set; } = new List<JToken>();
 
+        /// <summary>
+        /// Historical invoice records for this subscription.
+        /// </summary>
+        [JsonProperty("invoices_history")]
+        public List<JToken> InvoicesHistory { get; set; } = new List<JToken>();
+        
         /// <summary>
         /// The maximum number of invoices allowed (0 = unlimited).
         /// </summary>
@@ -116,6 +123,12 @@ namespace Paystack.NET.Models.Subscriptions.Entities
         public string? SplitCode { get; set; }
 
         /// <summary>
+        /// The most recent invoice associated with this subscription.
+        /// </summary>
+        [JsonProperty("most_recent_invoice")]
+        public JToken? MostRecentInvoice { get; set; }
+        
+        /// <summary>
         /// Additional metadata associated with the subscription.
         /// </summary>
         [JsonProperty("metadata")]
@@ -126,11 +139,5 @@ namespace Paystack.NET.Models.Subscriptions.Entities
         /// </summary>
         [JsonProperty("payments_count")]
         public int PaymentsCount { get; set; }
-
-        /// <summary>
-        /// The most recent invoice associated with this subscription.
-        /// </summary>
-        [JsonProperty("most_recent_invoice")]
-        public JToken? MostRecentInvoice { get; set; }
     }
 }

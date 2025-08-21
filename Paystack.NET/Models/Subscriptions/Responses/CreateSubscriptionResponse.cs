@@ -1,5 +1,6 @@
 using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Paystack.NET.Models.Subscriptions.Responses
 {
@@ -43,12 +44,18 @@ namespace Paystack.NET.Models.Subscriptions.Responses
         /// </summary>
         [JsonProperty("domain")]
         public string Domain { get; set; } = string.Empty;
-
+        
         /// <summary>
-        /// The start time of the subscription in Unix timestamp format.
+        /// The start date/time of the subscription as a Unix timestamp.
         /// </summary>
         [JsonProperty("start")]
-        public long Start { get; set; }
+        public long StartUnix { get; set; }
+
+        /// <summary>
+        /// The start date/time of the subscription (converted from Unix timestamp).
+        /// </summary>
+        [JsonIgnore]
+        public DateTime Start => DateTimeOffset.FromUnixTimeSeconds(StartUnix).UtcDateTime;
 
         /// <summary>
         /// Current status of the subscription (e.g., "active").
@@ -92,7 +99,7 @@ namespace Paystack.NET.Models.Subscriptions.Responses
         /// Custom metadata associated with the subscription.
         /// </summary>
         [JsonProperty("metadata")]
-        public string? Metadata { get; set; }
+        public JToken? Metadata { get; set; }
 
         /// <summary>
         /// Email token used for managing the subscription.

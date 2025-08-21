@@ -4,6 +4,6 @@ namespace Paystack.NET.Services
 {
     public abstract class BaseService
     {
-        protected readonly PaystackClient PaystackClient = new PaystackClient();
+        protected readonly IPaystackClient PaystackClient = new PaystackClient();
     }
 }

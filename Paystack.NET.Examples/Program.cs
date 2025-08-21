@@ -1,9 +1,9 @@
 ﻿using Paystack.NET.Configuration;
 using Paystack.NET.Examples.Handlers;
+using Paystack.NET.Examples.Utils;
+using Paystack.NET.Exceptions;
 
-//TODO: var apiKey = InputHelper.GetInput("Enter Paystack Secret Key: ");
-var apiKey = "sk_test_076787d2aa8bb3df372c8e073eab63ce6376fdfb";
-
+var apiKey = InputHelper.GetInput("Enter Paystack Secret Key: ");
 
 // Configure Paystack API Key
 PaystackConfiguration.Configure(apiKey);
@@ -55,10 +55,15 @@ while (true)
                 break;
         }
     }
+    catch (PaystackClientException e)
+    {
+        Console.WriteLine($"\nPaystack Error: {e.Error.Message}\n");
+    }
     catch (Exception e)
     {
         Console.WriteLine($"\nError: {e.Message}\n");
     }
+
 
     Console.WriteLine("\nPress the enter key to continue...");
     Console.ReadLine();

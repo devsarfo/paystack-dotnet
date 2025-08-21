@@ -6,7 +6,7 @@ namespace Paystack.NET.Models.Transactions.Options
     /// <summary>
     /// Represents the query parameters for retrieving transactions from the Paystack API.
     /// </summary>
-    public class ListTransactionOptions : BasePaginationOptions
+    public class ListTransactionsOptions : BasePaginationOptions
     {
         /// <summary>
         /// The ID of the customer whose transactions you want to retrieve.
