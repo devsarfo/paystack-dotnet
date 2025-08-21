@@ -4,7 +4,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>8</LangVersion>
         <PackageId>Paystack.NET.Client</PackageId>
-        <Version>1.0.2</Version>
+        <Version>1.0.3</Version>
         <Authors>Bernard Sarfo Twumasi</Authors>
         <Description>.NET SDK for integrating with Paystack Payments API.</Description>
         <Copyright>Copyright 2025</Copyright>

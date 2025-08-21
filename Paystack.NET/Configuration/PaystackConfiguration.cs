@@ -28,7 +28,7 @@ namespace Paystack.NET.Configuration
 
             if (!string.IsNullOrWhiteSpace(baseUrl))
             {
-                BaseUrl = baseUrl;
+                BaseUrl = baseUrl!;
             }
         }
     }
