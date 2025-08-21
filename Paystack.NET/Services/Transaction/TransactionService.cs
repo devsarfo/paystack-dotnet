@@ -19,7 +19,7 @@ namespace Paystack.NET.Services.Transaction
             return await PaystackClient.GetAsync<ApiResponse<VerifyTransactionResponse>>($"transaction/verify/{reference}");
         }
     
-        public async Task<PaginatedApiResponse<TransactionResponse>> ListAsync(ListTransactionOptions? options = null)
+        public async Task<PaginatedApiResponse<TransactionResponse>> ListAsync(ListTransactionsOptions? options = null)
         {
             var queryParams = options != null ? options.ToQueryString() : "";
             return await PaystackClient.GetAsync<PaginatedApiResponse<TransactionResponse>>($"transaction{queryParams}");
@@ -32,7 +32,7 @@ namespace Paystack.NET.Services.Transaction
 
         public async Task<ApiResponse<TransactionResponse>> ChargeAuthorizationAsync(ChargeAuthorizationOptions options)
         {
-            return await PaystackClient.PostAsync<object, ApiResponse<TransactionResponse>>($"transaction/charge_authorization", options);
+            return await PaystackClient.PostAsync<object, ApiResponse<TransactionResponse>>("transaction/charge_authorization", options);
         }
 
         public async Task<ApiResponse<TransactionLog>> TransactionTimelineAsync(string idOrReference)
@@ -42,7 +42,7 @@ namespace Paystack.NET.Services.Transaction
 
         public async Task<ApiResponse<TransactionTotalsResponse>> TransactionTotalsAsync()
         {
-            return await PaystackClient.GetAsync<ApiResponse<TransactionTotalsResponse>>($"transaction/totals");
+            return await PaystackClient.GetAsync<ApiResponse<TransactionTotalsResponse>>("transaction/totals");
         }
 
         public async Task<ApiResponse<ExportTransactionResponse>> ExportTransactionAsync(ExportTransactionOptions? options = null)
@@ -53,7 +53,7 @@ namespace Paystack.NET.Services.Transaction
 
         public async Task<ApiResponse<PartialDebitResponse>> PartialDebitAsync(PartialDebitOptions options)
         {
-            return await PaystackClient.PostAsync<object, ApiResponse<PartialDebitResponse>>($"transaction/partial_debit", options);
+            return await PaystackClient.PostAsync<object, ApiResponse<PartialDebitResponse>>("transaction/partial_debit", options);
         }
     }
 }

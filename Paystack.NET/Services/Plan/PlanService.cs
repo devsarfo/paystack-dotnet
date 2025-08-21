@@ -16,7 +16,7 @@ namespace Paystack.NET.Services.Plan
         public async Task<PaginatedApiResponse<PlanListData>> ListAsync(ListPlansOptions? options = null)
         {
             var queryParams = options != null ? options.ToQueryString() : "";
-            return await PaystackClient.GetAsync<PaginatedApiResponse<Models.Plans.Entities.PlanListData>>($"plan{queryParams}");
+            return await PaystackClient.GetAsync<PaginatedApiResponse<PlanListData>>($"plan{queryParams}");
         }
 
         public async Task<ApiResponse<PlanData>> FetchAsync(string idOrCode)

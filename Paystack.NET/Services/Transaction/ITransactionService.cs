@@ -12,7 +12,7 @@ namespace Paystack.NET.Services.Transaction
     
         public Task<ApiResponse<VerifyTransactionResponse>> VerifyAsync(string reference);
 
-        public Task<PaginatedApiResponse<TransactionResponse>> ListAsync(ListTransactionOptions? options = null);
+        public Task<PaginatedApiResponse<TransactionResponse>> ListAsync(ListTransactionsOptions? options = null);
     
         public Task<ApiResponse<TransactionResponse>> FetchAsync(string id);
     

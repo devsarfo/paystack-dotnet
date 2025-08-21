@@ -1,5 +1,6 @@
 using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Paystack.NET.Models.Customers.Entities;
 using Paystack.NET.Models.Transactions.Entities;
 
@@ -58,7 +59,7 @@ namespace Paystack.NET.Models.Transactions.Responses
         /// Metadata associated with the transaction.
         /// </summary>
         [JsonProperty("metadata")]
-        public object? Metadata { get; set; }
+        public JToken? Metadata { get; set; }
 
         /// <summary>
         /// The response message from the payment gateway.

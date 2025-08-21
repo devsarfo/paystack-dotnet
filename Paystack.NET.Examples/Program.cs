@@ -1,9 +1,9 @@
 ﻿using Paystack.NET.Configuration;
 using Paystack.NET.Examples.Handlers;
+using Paystack.NET.Examples.Utils;
+using Paystack.NET.Exceptions;
 
-//TODO: var apiKey = InputHelper.GetInput("Enter Paystack Secret Key: ");
-var apiKey = "sk_test_076787d2aa8bb3df372c8e073eab63ce6376fdfb";
-
+var apiKey = InputHelper.GetInput("Enter Paystack Secret Key: ");
 
 // Configure Paystack API Key
 PaystackConfiguration.Configure(apiKey);
@@ -14,7 +14,8 @@ while (true)
     Console.WriteLine("1. Transactions");
     Console.WriteLine("2. Customers");
     Console.WriteLine("3. Plans");
-    Console.WriteLine("4. Callback (Webhook)");
+    Console.WriteLine("4. Subscriptions");
+    Console.WriteLine("5. Callback (Webhook)");
     Console.WriteLine("Q. Quit");
     Console.Write("Select an option: ");
 
@@ -39,6 +40,10 @@ while (true)
                 await planHandler.Init();
                 break;
             case "4":
+                var subscriptionHandler = new SubscriptionHandler();
+                await subscriptionHandler.Init();
+                break;
+            case "5":
                 var callbackHandler = new CallbackHandler();
                 await callbackHandler.Init();
                 break;
@@ -50,10 +55,15 @@ while (true)
                 break;
         }
     }
+    catch (PaystackClientException e)
+    {
+        Console.WriteLine($"\nPaystack Error: {e.Error.Message}\n");
+    }
     catch (Exception e)
     {
         Console.WriteLine($"\nError: {e.Message}\n");
     }
+
 
     Console.WriteLine("\nPress the enter key to continue...");
     Console.ReadLine();

@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Paystack.NET.Constants;
 
 namespace Paystack.NET.Models.Transactions.Options
@@ -54,7 +55,7 @@ namespace Paystack.NET.Models.Transactions.Options
         /// Either a Key/value pair or using the CustomField class for Custom Fields
         /// </summary>
         [JsonProperty("metadata")]
-        public object? Metadata { get; set; }
+        public JToken? Metadata { get; set; }
 
         /// <summary>
         /// An array of payment channels. Default is all available channels.

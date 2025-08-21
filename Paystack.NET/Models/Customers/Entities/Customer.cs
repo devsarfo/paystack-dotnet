@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Paystack.NET.Models.Customers.Entities
 {
@@ -44,7 +44,7 @@ namespace Paystack.NET.Models.Customers.Entities
         /// Additional metadata related to the customer.
         /// </summary>
         [JsonProperty("metadata")]
-        public Dictionary<string, object> Metadata { get; set; } = new Dictionary<string, object>();
+        public JToken? Metadata { get; set; }
 
         /// <summary>
         /// The domain of the customer (e.g., live, test).

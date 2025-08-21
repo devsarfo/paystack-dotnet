@@ -17,13 +17,13 @@ namespace Paystack.NET.Models.Plans.Options
         /// <summary>
         /// Filter list by plans with specified interval
         /// </summary>
-        [JsonProperty("interval")]
+        [JsonProperty("interval", NullValueHandling = NullValueHandling.Ignore)]
         public string? Interval { get; set; }
         
         /// <summary>
         /// Filter list by plans with specified amount using the supported currency
         /// </summary>
-        [JsonProperty("amount")]
+        [JsonProperty("amount", NullValueHandling = NullValueHandling.Ignore)]
         public int? Amount { get; set; }
     }
 }
