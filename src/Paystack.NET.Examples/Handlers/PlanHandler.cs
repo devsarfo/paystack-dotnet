@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 using Paystack.NET.Constants;
-using Paystack.NET.Examples.Utils;
 using Paystack.NET.Models.Plans.Options;
 using Paystack.NET.Services.Plan;
+using Sharprompt;
 
 namespace Paystack.NET.Examples.Handlers;
 
@@ -12,34 +12,35 @@ public class PlanHandler
 
     public async Task Init()
     {
-        Console.WriteLine("\n--- Plans ---");
-        Console.WriteLine("1. Create Plan");
-        Console.WriteLine("2. List Plans");
-        Console.WriteLine("3. Fetch Plan");
-        Console.WriteLine("4. Update Plan");
-        Console.Write("Select an option: ");
+        Console.Clear();
+        Console.WriteLine("--- Plans ---");
 
-        var choice = Console.ReadLine()?.Trim();
+        var option = Prompt.Select("Select an option", [
+            "Create Plan",
+            "List Plans",
+            "Fetch Plan",
+            "Update Plan"
+        ]);
 
         Console.Clear();
 
         try
         {
-            switch (choice)
+            switch (option)
             {
-                case "1":
+                case "Create Plan":
                     Console.WriteLine("--- Create Plan ---\n");
                     await CreatePlan();
                     break;
-                case "2":
+                case "List Plans":
                     Console.WriteLine("--- List Plans---\n");
                     await ListPlans();
                     break;
-                case "3":
+                case "Fetch Plan":
                     Console.WriteLine("--- Fetch Plan---\n");
                     await FetchPlan();
                     break;
-                case "4":
+                case "Update Plan":
                     Console.WriteLine("--- Update Plan---\n");
                     await UpdatePlan();
                     break;
@@ -56,16 +57,23 @@ public class PlanHandler
 
     private async Task CreatePlan()
     {
-        var name = InputHelper.GetInput("Enter Name: ");
-        var amountString = InputHelper.GetInput("Enter Amount (in subunit): ");
-        var amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : 500;
-        var description = InputHelper.GetInput("Enter Description: ");
-            
+        var name = Prompt.Input<string>("Enter Name", validators: [Validators.Required()]);
+        var amount = Prompt.Input<int>("Enter Amount (in subunit)", validators: [Validators.Required()]);
+        var description = Prompt.Input<string>("Enter Description", validators: [Validators.Required()]);
+        var interval = Prompt.Select<string>("Select Interval", [
+            PlanInterval.Daily,
+            PlanInterval.Weekly,
+            PlanInterval.Monthly,
+            PlanInterval.Quarterly,
+            PlanInterval.Biannually,
+            PlanInterval.Annually
+        ]);
+
         var response = await _planService.CreateAsync(new CreatePlanOptions
         {
             Name = name,
             Amount = amount,
-            Interval = PlanInterval.Monthly,
+            Interval = interval,
             Description = description,
             SendInvoices = true,
             SendSms = true
@@ -91,21 +99,22 @@ public class PlanHandler
 
     private async Task ListPlans()
     {
-        var perPageString = InputHelper.GetInput("Enter Plans Per Page (default 50): ", true);
-        var perPage = int.TryParse(perPageString, out var parsedPerPage) ? parsedPerPage : 50;
-            
-        var pageString = InputHelper.GetInput("Enter Page (default 1): ", true);
-        var page = int.TryParse(pageString, out var parsedPage) ? parsedPage : 1;
-            
-        var status = InputHelper.GetInput("Enter Status: ", true);
-        if(string.IsNullOrEmpty(status)) status = null;
-            
-        var interval = InputHelper.GetInput("Enter Interval: ", true);
-        if(string.IsNullOrEmpty(interval)) interval = null;
-            
-        var amountString = InputHelper.GetInput("Enter Amount (in subunit): ", true);
-        int? amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : null;
-            
+        var perPage = Prompt.Input<int>("Enter Plans Per Page (default 50)", 50);
+        var page = Prompt.Input<int>("Enter Page (default 1)", 1);
+        var status = Prompt.Input<string?>("Enter Status");
+        var interval = Prompt.Select<string>("Select Interval", [
+            PlanInterval.Daily,
+            PlanInterval.Weekly,
+            PlanInterval.Monthly,
+            PlanInterval.Quarterly,
+            PlanInterval.Biannually,
+            PlanInterval.Annually,
+            "All"
+        ], defaultValue: "All");
+        if (interval == "All") interval = null;
+        
+        var amount = Prompt.Input<int?>("Enter Amount (in subunit)");
+
         var response = await _planService.ListAsync(new ListPlansOptions
         {
             PerPage = perPage,
@@ -114,7 +123,7 @@ public class PlanHandler
             Interval = interval,
             Status = status
         });
-            
+
         if (response.Status)
         {
             Console.WriteLine("\nPlans Listed Successfully!");
@@ -138,9 +147,9 @@ public class PlanHandler
 
     private async Task FetchPlan()
     {
-        var idOrCode = InputHelper.GetInput("Enter Plan Id or Code: ");
+        var idOrCode = Prompt.Input<string>("Enter Plan Id or Code", validators: [Validators.Required()]);
         var response = await _planService.FetchAsync(idOrCode);
-            
+
         if (response.Status)
         {
             Console.WriteLine("\nPlan Fetched Successfully!");
@@ -161,28 +170,29 @@ public class PlanHandler
 
     private async Task UpdatePlan()
     {
-        var emailOrCode = InputHelper.GetInput("Enter Plan Id or Code: ");
+        var emailOrCode = Prompt.Input<string>("Enter Plan Id or Code", validators: [Validators.Required()]);
         var search = await _planService.FetchAsync(emailOrCode);
-            
+
         if (search is { Status: false, Data: null })
         {
             Console.WriteLine($"Error: {search.Message}");
         }
-            
-        var plan = search.Data!;
-        var name = InputHelper.GetInput($"Enter Name [{plan.Name}]: ", true);
-        if(string.IsNullOrEmpty(name)) name = plan.Name;
-            
-        var amountString = InputHelper.GetInput($"Enter Amount (in subunit) [{plan.Amount}]: ", true);
-        var amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : plan.Amount;
-            
-        var interval = InputHelper.GetInput($"Enter Interval (daily, weekly, monthly,quarterly, biannually, annually) [{plan.Interval}]: ", true);
-        if(string.IsNullOrEmpty(interval)) interval = plan.Interval;
-            
-        var description = InputHelper.GetInput($"Enter Description [{plan.Description}]: ", true);
-        if(string.IsNullOrEmpty(description)) description = plan.Description;
 
-            
+        var plan = search.Data!;
+        var name = Prompt.Input<string>($"Enter Name [{plan.Name}]", plan.Name);
+        var amount = Prompt.Input<int>($"Enter Amount (in subunit) [{plan.Amount}]", plan.Amount);
+
+        var interval = Prompt.Select<string>("Select Interval", [
+            PlanInterval.Daily,
+            PlanInterval.Weekly,
+            PlanInterval.Monthly,
+            PlanInterval.Quarterly,
+            PlanInterval.Biannually,
+            PlanInterval.Annually
+        ], defaultValue: plan.Interval);
+
+        var description = Prompt.Input<string>($"Enter Description [{plan.Description}]", plan.Description);
+
         var response = await _planService.UpdateAsync(plan.PlanCode, new UpdatePlanOptions
         {
             Name = name,
@@ -193,7 +203,7 @@ public class PlanHandler
             SendSms = true,
             UpdateExistingSubscriptions = true
         });
-            
+
         if (response.Status)
         {
             Console.WriteLine("\nPlan Updated Successfully!");

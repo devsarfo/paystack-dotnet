@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paystack.NET", "Paystack.NET\Paystack.NET.csproj", "{15FE6C76-8F3A-4DB1-9378-DEA8230D7634}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paystack.NET", "src\Paystack.NET\Paystack.NET.csproj", "{15FE6C76-8F3A-4DB1-9378-DEA8230D7634}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paystack.NET.Tests", "Paystack.NET.Tests\Paystack.NET.Tests.csproj", "{9F8EB822-1E87-4151-B7F6-54AA1CF112EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paystack.NET.Tests", "src\Paystack.NET.Tests\Paystack.NET.Tests.csproj", "{9F8EB822-1E87-4151-B7F6-54AA1CF112EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paystack.NET.Examples", "Paystack.NET.Examples\Paystack.NET.Examples.csproj", "{40A503E1-A250-4E86-A329-67A8DBB76464}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paystack.NET.Examples", "src\Paystack.NET.Examples\Paystack.NET.Examples.csproj", "{40A503E1-A250-4E86-A329-67A8DBB76464}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

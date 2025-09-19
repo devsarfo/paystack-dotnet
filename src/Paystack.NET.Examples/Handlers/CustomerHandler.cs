@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
 using Paystack.NET.Constants;
-using Paystack.NET.Examples.Utils;
 using Paystack.NET.Models.Customers.Options;
 using Paystack.NET.Models.Customers.Shared;
 using Paystack.NET.Services.Customer;
+using Sharprompt;
 
 namespace Paystack.NET.Examples.Handlers;
 
@@ -13,79 +13,78 @@ public class CustomerHandler
 
     public async Task Init()
     {
-        Console.WriteLine("\n--- Customers ---");
-        Console.WriteLine("1. Create Customer");
-        Console.WriteLine("2. List Customers");
-        Console.WriteLine("3. Fetch Customer");
-        Console.WriteLine("4. Update Customer");
-        Console.WriteLine("5. Validate Customer");
-        Console.WriteLine("6. Whitelist/Blacklist Customer");
-        Console.WriteLine("7. Initialize Authorization");
-        Console.WriteLine("8. Verify Authorization");
-        Console.WriteLine("9. Initialize Direct Debit");
-        Console.WriteLine("10. Direct Debit Activation Charge");
-        Console.WriteLine("11. Fetch Mandate Authorizations");
-        Console.WriteLine("12. Deactivate Authorization");
-        Console.Write("Select an option: ");
+        Console.Clear();
+        Console.WriteLine("--- Customers ---");
 
-        var choice = Console.ReadLine()?.Trim();
+        var option = Prompt.Select("Select an option", [
+            "Create Customer",
+            "List Customers",
+            "Fetch Customer",
+            "Update Customer",
+            "Validate Customer",
+            "Whitelist/Blacklist Customer",
+            "Initialize Authorization",
+            "Verify Authorization",
+            "Initialize Direct Debit",
+            "Direct Debit Activation Charge",
+            "Fetch Mandate Authorizations",
+            "Deactivate Authorization"
+        ]);
+
 
         Console.Clear();
 
         try
         {
-            switch (choice)
+            switch (option)
             {
-                case "1":
+                case "Create Customer ":
                     Console.WriteLine("--- Create Customer ---\n");
                     await CreateCustomer();
                     break;
-                case "2":
+                case "List Customers":
                     Console.WriteLine("--- List Customers---\n");
                     await ListCustomers();
                     break;
-                case "3":
+                case "Fetch Customer":
                     Console.WriteLine("--- Fetch Customers---\n");
                     await FetchCustomer();
                     break;
-                case "4":
+                case "Update Customer":
                     Console.WriteLine("--- Update Customer---\n");
                     await UpdateCustomer();
                     break;
-                case "5":
+                case "Validate Customer":
                     Console.WriteLine("--- Validate Customer---\n");
                     await ValidateCustomer();
                     break;
-                case "6":
+                case "Whitelist/Blacklist Customer":
                     Console.WriteLine("--- Whitelist/Blacklist Customer---\n");
                     await WhitelistBlacklistCustomer();
                     break;
-                case "7":
+                case "Initialize Authorization":
                     Console.WriteLine("--- Initialize Authorization ---\n");
                     await InitializeAuthorization();
                     break;
-                case "8":
+                case "Verify Authorization":
                     Console.WriteLine("--- Verify Authorization ---\n");
                     await VerifyAuthorization();
                     break;
-                case "9":
+                case "Initialize Direct Debit":
                     Console.WriteLine("--- Initialize Direct Debit ---\n");
                     await InitializeDirectDebit();
                     break;
-                case "10":
+                case "Direct Debit Activation Charge":
                     Console.WriteLine("--- Direct Debit Activation Charge ---\n");
                     await DirectDebitActivationCharge();
                     break;
-                case "11":
+                case "Fetch Mandate Authorizations":
                     Console.WriteLine("--- Fetch Mandate Authorizations ---\n");
                     await FetchMandateAuthorizations();
                     break;
-                case "12":
+                case "Deactivate Authorization":
                     Console.WriteLine("--- Deactivate Authorization ---\n");
                     await DeactivateAuthorization();
-                    break;
-                default:
-                    Console.WriteLine("Invalid option. Please try again.");
                     break;
             }
         }
@@ -97,10 +96,10 @@ public class CustomerHandler
 
     private async Task CreateCustomer()
     {
-        var email = InputHelper.GetInput("Enter E-mail Address: ");
-        var firstName = InputHelper.GetInput("Enter First Name: ");
-        var lastName = InputHelper.GetInput("Enter Last Name: ");
-        var phone = InputHelper.GetInput("Enter Phone (in int'l format): ", true);
+        var email = Prompt.Input<string>("Enter E-mail Address", validators: [Validators.Required()]);
+        var firstName = Prompt.Input<string>("Enter First Name", validators: [Validators.Required()]);
+        var lastName = Prompt.Input<string>("Enter Last Name", validators: [Validators.Required()]);
+        var phone = Prompt.Input<string>("Enter Phone (in int'l format)", true);
 
         var response = await _customerService.CreateAsync(new CreateCustomerOptions
         {
@@ -133,12 +132,9 @@ public class CustomerHandler
 
     private async Task ListCustomers()
     {
-        var perPageString = InputHelper.GetInput("Enter Customers Per Page (default 50): ", true);
-        var perPage = int.TryParse(perPageString, out var parsedPerPage) ? parsedPerPage : 50;
-
-        var pageString = InputHelper.GetInput("Enter Page (default 1): ", true);
-        var page = int.TryParse(pageString, out var parsedPage) ? parsedPage : 1;
-
+        var perPage = Prompt.Input<int>("Enter Customers Per Page (default 50)", 50);
+        var page = Prompt.Input<int>("Enter Page (default 1)", 1);
+        
         var response = await _customerService.ListAsync(new ListCustomersOptions
         {
             PerPage = perPage,
@@ -165,7 +161,7 @@ public class CustomerHandler
 
     private async Task FetchCustomer()
     {
-        var emailOrCode = InputHelper.GetInput("Enter Customer E-mail or Code: ");
+        var emailOrCode = Prompt.Input<string>("Enter Customer E-mail or Code", validators: [Validators.Required()]);
         var response = await _customerService.FetchAsync(emailOrCode);
 
         if (response.Status)
@@ -187,7 +183,7 @@ public class CustomerHandler
 
     private async Task UpdateCustomer()
     {
-        var emailOrCode = InputHelper.GetInput("Enter Customer E-mail or Code: ");
+        var emailOrCode = Prompt.Input<string>("Enter Customer E-mail or Code", validators: [Validators.Required()]);
         var search = await _customerService.FetchAsync(emailOrCode);
 
         if (search is { Status: false, Data: null })
@@ -196,14 +192,9 @@ public class CustomerHandler
         }
 
         var customer = search.Data!;
-        var firstName = InputHelper.GetInput($"Enter First Name [{customer.FirstName}]: ", true);
-        if (string.IsNullOrEmpty(firstName)) firstName = customer.FirstName ?? string.Empty;
-
-        var lastName = InputHelper.GetInput($"Enter Last Name [{customer.LastName}]: ", true);
-        if (string.IsNullOrEmpty(lastName)) lastName = customer.LastName ?? string.Empty;
-
-        var phone = InputHelper.GetInput($"Enter Phone (in int'l format) [{customer.Phone}]: ", true);
-        if (string.IsNullOrEmpty(phone)) phone = customer.Phone;
+        var firstName = Prompt.Input<string>($"Enter First Name [{customer.FirstName}]", customer.FirstName);
+        var lastName = Prompt.Input<string>($"Enter Last Name [{customer.LastName}]", customer.LastName);
+        var phone = Prompt.Input<string>($"Enter Phone (in int'l format) [{customer.Phone}]", customer.Phone);
 
         var response = await _customerService.UpdateAsync(customer.CustomerCode, new UpdateCustomerOptions
         {
@@ -235,7 +226,7 @@ public class CustomerHandler
 
     private async Task ValidateCustomer()
     {
-        var emailOrCode = InputHelper.GetInput("Enter Customer E-mail or Code: ");
+        var emailOrCode = Prompt.Input<string>("Enter Customer E-mail or Code", validators: [Validators.Required()]);
         var search = await _customerService.FetchAsync(emailOrCode);
 
         if (search is { Status: false, Data: null })
@@ -244,26 +235,15 @@ public class CustomerHandler
         }
 
         var customer = search.Data!;
-        var firstName = InputHelper.GetInput($"Enter First Name [{customer.FirstName}]: ", true);
-        if (string.IsNullOrEmpty(firstName)) firstName = customer.FirstName ?? string.Empty;
-
-        var lastName = InputHelper.GetInput($"Enter Last Name [{customer.LastName}]: ", true);
-        if (string.IsNullOrEmpty(lastName)) lastName = customer.LastName ?? string.Empty;
-
-        var type = InputHelper.GetInput($"Enter Type of Identification [{IdentificationType.BankAccount}]: ", true);
-        if (string.IsNullOrEmpty(type)) type = IdentificationType.BankAccount;
-
-        var value = InputHelper.GetInput("Enter Customer's Identification Number: ");
-
-        var country = InputHelper.GetInput("Enter The 2-letter Country Code of Identification Issuer: ");
-
-        var bvn = InputHelper.GetInput("Enter Customer's Bank Verification Number: ");
-
-        var bankCode = InputHelper.GetInput("Enter Customer's Bank Code: ");
-
-        var accountNumber = InputHelper.GetInput("Enter Customer's Bank Account Number: ");
-
-        var middleName = InputHelper.GetInput("Enter Middle Name: ", true);
+        var firstName = Prompt.Input<string>($"Enter First Name [{customer.FirstName}]", customer.FirstName);
+        var lastName = Prompt.Input<string>($"Enter Last Name [{customer.LastName}]", customer.LastName);
+        var type = Prompt.Input<string>($"Enter Type of Identification [{IdentificationType.BankAccount}]", IdentificationType.BankAccount);
+        var value = Prompt.Input<string>("Enter Customer's Identification Number", validators: [Validators.Required()]);
+        var country = Prompt.Input<string>("Enter The 2-letter Country Code of Identification Issuer", validators: [Validators.Required()]);
+        var bvn = Prompt.Input<string>("Enter Customer's Bank Verification Number", validators: [Validators.Required()]);
+        var bankCode = Prompt.Input<string>("Enter Customer's Bank Code", validators: [Validators.Required()]);
+        var accountNumber = Prompt.Input<string>("Enter Customer's Bank Account Number", validators: [Validators.Required()]);
+        var middleName = Prompt.Input<string>("Enter Middle Name");
 
 
         var response = await _customerService.ValidateAsync(customer.CustomerCode, new ValidateCustomerOptions
@@ -292,10 +272,10 @@ public class CustomerHandler
             Console.WriteLine($"Error: {response.Message}");
         }
     }
-        
+
     private async Task WhitelistBlacklistCustomer()
     {
-        var emailOrCode = InputHelper.GetInput("Enter Customer E-mail or Code: ");
+        var emailOrCode = Prompt.Input<string>("Enter Customer E-mail or Code", validators: [Validators.Required()]);
         var search = await _customerService.FetchAsync(emailOrCode);
 
         if (search is { Status: false, Data: null })
@@ -304,8 +284,7 @@ public class CustomerHandler
         }
 
         var customer = search.Data!;
-        var riskAction = InputHelper.GetInput($"Enter Risk Action [{customer.RiskAction}]: ", true);
-        if (string.IsNullOrEmpty(riskAction)) riskAction = customer.RiskAction;
+        var riskAction = Prompt.Input<string>($"Enter Risk Action [{customer.RiskAction}]", customer.RiskAction);
 
         var response = await _customerService.UpdateRiskActionAsync(new CustomerRiskActionOptions
         {
@@ -329,10 +308,10 @@ public class CustomerHandler
             Console.WriteLine($"Error: {response.Message}");
         }
     }
-        
+
     private async Task InitializeAuthorization()
     {
-        var emailOrCode = InputHelper.GetInput("Enter Customer E-mail or Code: ");
+        var emailOrCode = Prompt.Input<string>("Enter Customer E-mail or Code", validators: [Validators.Required()]);
         var search = await _customerService.FetchAsync(emailOrCode);
 
         if (search is { Status: false, Data: null })
@@ -341,12 +320,8 @@ public class CustomerHandler
         }
 
         var customer = search.Data!;
-        var channel = InputHelper.GetInput($"Enter Channel [{AuthorizationChannel.DirectDebit}]: ", true);
-        if(string.IsNullOrEmpty(channel)) channel = AuthorizationChannel.DirectDebit;
-
-        var callbackUrl = InputHelper.GetInput("Enter Callback URL: ", true);
-        if (string.IsNullOrEmpty(callbackUrl)) callbackUrl = null;
-            
+        var channel = Prompt.Input<string>($"Enter Channel [{AuthorizationChannel.DirectDebit}]", AuthorizationChannel.DirectDebit);
+        var callbackUrl = Prompt.Input<string?>("Enter Callback URL");
         var response = await _customerService.InitializeAuthorizationAsync(new InitializeAuthorizationOptions
         {
             Email = customer.Email,
@@ -368,10 +343,10 @@ public class CustomerHandler
             Console.WriteLine($"Error: {response.Message}");
         }
     }
-        
+
     private async Task VerifyAuthorization()
     {
-        var reference = InputHelper.GetInput("Enter Authorization Reference: ");
+        var reference = Prompt.Input<string>("Enter Authorization Reference", validators: [Validators.Required()]);
         var response = await _customerService.VerifyAuthorizationAsync(reference);
 
         if (response.Status)
@@ -390,10 +365,10 @@ public class CustomerHandler
             Console.WriteLine($"Error: {response.Message}");
         }
     }
-        
+
     private async Task InitializeDirectDebit()
     {
-        var emailOrCode = InputHelper.GetInput("Enter Customer E-mail or Code: ");
+        var emailOrCode = Prompt.Input<string>("Enter Customer E-mail or Code", validators: [Validators.Required()]);
         var search = await _customerService.FetchAsync(emailOrCode);
 
         if (search is { Status: false, Data: null })
@@ -402,26 +377,27 @@ public class CustomerHandler
         }
 
         var customer = search.Data!;
-        var accountNumber = InputHelper.GetInput("Enter Account Number: ");
-        var accountBankCode = InputHelper.GetInput("Enter Account Bank Code: ");
-        var street = InputHelper.GetInput("Enter Address Street: ");
-        var city = InputHelper.GetInput("Enter Address City: ");
-        var state = InputHelper.GetInput("Enter Address State: ");
-            
-        var response = await _customerService.InitializeDirectDebitAsync(customer.Id.ToString(), new InitializeDirectDebitOptions
-        {
-            Account = new AccountDetails
+        var accountNumber = Prompt.Input<string>("Enter Account Number", validators: [Validators.Required()]);
+        var accountBankCode = Prompt.Input<string>("Enter Account Bank Code", validators: [Validators.Required()]);
+        var street = Prompt.Input<string>("Enter Address Street", validators: [Validators.Required()]);
+        var city = Prompt.Input<string>("Enter Address City", validators: [Validators.Required()]);
+        var state = Prompt.Input<string>("Enter Address State", validators: [Validators.Required()]);
+
+        var response = await _customerService.InitializeDirectDebitAsync(customer.Id.ToString(),
+            new InitializeDirectDebitOptions
             {
-                BankCode = accountBankCode,
-                Number = accountNumber
-            },
-            Address = new AddressDetails
-            {
-                Street = street,
-                City = city,
-                State = state
-            }
-        });
+                Account = new AccountDetails
+                {
+                    BankCode = accountBankCode,
+                    Number = accountNumber
+                },
+                Address = new AddressDetails
+                {
+                    Street = street,
+                    City = city,
+                    State = state
+                }
+            });
 
         if (response.Status)
         {
@@ -437,10 +413,10 @@ public class CustomerHandler
             Console.WriteLine($"Error: {response.Message}");
         }
     }
-        
+
     private async Task DirectDebitActivationCharge()
     {
-        var emailOrCode = InputHelper.GetInput("Enter Customer E-mail or Code: ");
+        var emailOrCode = Prompt.Input<string>("Enter Customer E-mail or Code", validators: [Validators.Required()]);
         var search = await _customerService.FetchAsync(emailOrCode);
 
         if (search is { Status: false, Data: null })
@@ -449,12 +425,13 @@ public class CustomerHandler
         }
 
         var customer = search.Data!;
-        var authorizationId = InputHelper.GetInput("Enter Authorization ID: ");
-            
-        var response = await _customerService.DirectDebitActivationChargeAsync(customer.Id.ToString(), new DirectDebitActivationChargeOptions
-        {
-            AuthorizationId = authorizationId
-        });
+        var authorizationId = Prompt.Input<string>("Enter Authorization ID: ");
+
+        var response = await _customerService.DirectDebitActivationChargeAsync(customer.Id.ToString(),
+            new DirectDebitActivationChargeOptions
+            {
+                AuthorizationId = authorizationId
+            });
 
         if (response.Status)
         {
@@ -469,10 +446,10 @@ public class CustomerHandler
             Console.WriteLine($"Error: {response.Message}");
         }
     }
-        
+
     private async Task FetchMandateAuthorizations()
     {
-        var emailOrCode = InputHelper.GetInput("Enter Customer E-mail or Code: ");
+        var emailOrCode = Prompt.Input<string>("Enter Customer E-mail or Code: ");
         var search = await _customerService.FetchAsync(emailOrCode);
 
         if (search is { Status: false, Data: null })
@@ -497,6 +474,7 @@ public class CustomerHandler
                 Console.Write($"\tAuthorized At: {authorization.AuthorizedAt}");
                 Console.WriteLine("");
             }
+
             Console.WriteLine("");
             Console.WriteLine($"JSON: {JsonConvert.SerializeObject(response)}");
         }
@@ -505,10 +483,10 @@ public class CustomerHandler
             Console.WriteLine($"Error: {response.Message}");
         }
     }
-        
+
     private async Task DeactivateAuthorization()
     {
-        var authorizationCode = InputHelper.GetInput("Enter Authorization Code: ");
+        var authorizationCode = Prompt.Input<string>("Enter Authorization Code: ");
         var response = await _customerService.DeactivateAuthorizationAsync(new DeactivateAuthorizationOptions
         {
             AuthorizationCode = authorizationCode
