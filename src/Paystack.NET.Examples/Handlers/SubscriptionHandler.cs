@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
-using Paystack.NET.Examples.Utils;
 using Paystack.NET.Models.Subscriptions.Options;
 using Paystack.NET.Services.Customer;
 using Paystack.NET.Services.Plan;
 using Paystack.NET.Services.Subscription;
+using Sharprompt;
 
 namespace Paystack.NET.Examples.Handlers;
 
@@ -15,15 +15,18 @@ public class SubscriptionHandler
 
     public async Task Init()
     {
-        Console.WriteLine("\n--- Subscriptions ---");
-        Console.WriteLine("1. Create Subscription");
-        Console.WriteLine("2. List Subscriptions");
-        Console.WriteLine("3. Fetch Subscription");
-        Console.WriteLine("4. Enable Subscription");
-        Console.WriteLine("5. Disable Subscription");
-        Console.WriteLine("6. Generate Update Subscription Link");
-        Console.WriteLine("7. Send Update Subscription Link");
-        Console.Write("Select an option: ");
+        Console.Clear();
+        Console.WriteLine("--- Subscriptions ---");
+
+        var option = Prompt.Select("Select an option", [
+            "Create Subscription",
+            "List Subscriptions",
+            "Fetch Subscription",
+            "Enable Subscription",
+            "Disable Subscription",
+            "Generate Update Subscription Link",
+            "Send Update Subscription Link",
+        ]);
 
         var choice = Console.ReadLine()?.Trim();
 
@@ -33,36 +36,33 @@ public class SubscriptionHandler
         {
             switch (choice)
             {
-                case "1":
+                case "Create Subscription":
                     Console.WriteLine("--- Create Subscription ---\n");
                     await CreateSubscription();
                     break;
-                case "2":
+                case "List Subscriptions":
                     Console.WriteLine("--- List Subscriptions ---\n");
                     await ListSubscriptions();
                     break;
-                case "3":
+                case "Fetch Subscription":
                     Console.WriteLine("--- Fetch Subscription ---\n");
                     await FetchSubscription();
                     break;
-                case "4":
+                case "Enable Subscription":
                     Console.WriteLine("--- Enable Subscription ---\n");
                     await EnableSubscription();
                     break;
-                case "5":
+                case "Disable Subscription":
                     Console.WriteLine("--- Disable Subscription ---\n");
                     await DisableSubscription();
                     break;
-                case "6":
+                case "Generate Update Subscription Link":
                     Console.WriteLine("--- Generate Update Subscription Link ---\n");
                     await GenerateUpdateSubscriptionLink();
                     break;
-                case "7":
+                case "Send Update Subscription Link":
                     Console.WriteLine("--- Send Update Subscription Link ---\n");
                     await SendUpdateSubscriptionLink();
-                    break;
-                default:
-                    Console.WriteLine("Invalid option. Please try again.");
                     break;
             }
         }
@@ -74,7 +74,7 @@ public class SubscriptionHandler
     
     private async Task CreateSubscription()
     {
-        var customerCodeOrEmail = InputHelper.GetInput("Enter Customer Code E-mail Address: ");
+        var customerCodeOrEmail = Prompt.Input<string>("Enter Customer Code E-mail Address", validators: [Validators.Required()]);
         var customerResponse = await _customerService.FetchAsync(customerCodeOrEmail);
         
         if (!customerResponse.Status) 
@@ -85,7 +85,7 @@ public class SubscriptionHandler
         
         var customer = customerResponse.Data!;
         
-        var planIdOrCode = InputHelper.GetInput("Enter Plan Id or Code: ");
+        var planIdOrCode = Prompt.Input<string>("Enter Plan Id or Code", validators: [Validators.Required()]);
         var planResponse = await _planService.FetchAsync(planIdOrCode);
 
         if (!planResponse.Status)
@@ -95,11 +95,8 @@ public class SubscriptionHandler
         }
         
         var plan = planResponse.Data!;
-        var authorization = InputHelper.GetInput("Enter Authorization Code [Optional]: ", true);
-        if(string.IsNullOrEmpty(authorization)) authorization = null;
-        
-        var startDate = InputHelper.GetInput("Enter Start Date (ISO 8601 format e.g. 2017-05-16T00:30:13+01:00) [Optional]: ", true);
-        if(string.IsNullOrEmpty(startDate)) startDate = null;
+        var authorization = Prompt.Input<string?>("Enter Authorization Code [Optional]");
+        var startDate = Prompt.Input<string?>("Enter Start Date (ISO 8601 format e.g. 2017-05-16T00:30:13+01:00) [Optional]");
         
         var response = await _subscriptionService.CreateAsync(new CreateSubscriptionOptions
         {
@@ -130,11 +127,8 @@ public class SubscriptionHandler
     
     private async Task ListSubscriptions()
     {
-        var perPageString = InputHelper.GetInput("Enter Subscriptions Per Page (default 50): ", true);
-        var perPage = int.TryParse(perPageString, out var parsedPerPage) ? parsedPerPage : 50;
-
-        var pageString = InputHelper.GetInput("Enter Page (default 1): ", true);
-        var page = int.TryParse(pageString, out var parsedPage) ? parsedPage : 1;
+        var perPage = Prompt.Input<int>("Enter Subscriptions Per Page (default 50)", 50);
+        var page = Prompt.Input<int>("Enter Page (default 1)", 1);
 
         var response = await _subscriptionService.ListAsync(new ListSubscriptionsOptions
         {
@@ -167,7 +161,7 @@ public class SubscriptionHandler
     
     private async Task FetchSubscription()
     {
-        var idOrCode = InputHelper.GetInput("Enter Subscription Id or Code: ");
+        var idOrCode = Prompt.Input<string>("Enter Subscription Id or Code", validators: [Validators.Required()]);
         var response = await _subscriptionService.FetchAsync(idOrCode);
 
         if (response.Status)
@@ -192,8 +186,8 @@ public class SubscriptionHandler
     
     private async Task EnableSubscription()
     {
-        var idOrCode = InputHelper.GetInput("Enter Subscription Id or Code: ");
-        var token = InputHelper.GetInput("Enter Subscription E-mail Token: ");
+        var idOrCode = Prompt.Input<string>("Enter Subscription Id or Code", validators: [Validators.Required()]);
+        var token = Prompt.Input<string>("Enter Subscription E-mail Token", validators: [Validators.Required()]);
         
         var response = await _subscriptionService.EnableAsync(new EnableSubscriptionOptions
         {
@@ -217,8 +211,8 @@ public class SubscriptionHandler
     
     private async Task DisableSubscription()
     {
-        var idOrCode = InputHelper.GetInput("Enter Subscription Id or Code: ");
-        var token = InputHelper.GetInput("Enter Subscription E-mail Token: ");
+        var idOrCode = Prompt.Input<string>("Enter Subscription Id or Code", validators: [Validators.Required()]);
+        var token = Prompt.Input<string>("Enter Subscription E-mail Token", validators: [Validators.Required()]);
         
         var response = await _subscriptionService.DisableAsync(new DisableSubscriptionOptions
         {
@@ -242,7 +236,7 @@ public class SubscriptionHandler
     
     private async Task GenerateUpdateSubscriptionLink()
     {
-        var idOrCode = InputHelper.GetInput("Enter Subscription Id or Code: ");
+        var idOrCode = Prompt.Input<string>("Enter Subscription Id or Code", validators: [Validators.Required()]);
         var response = await _subscriptionService.GenerateUpdateSubscriptionLinkAsync(idOrCode);
 
         if (response.Status)
@@ -262,7 +256,7 @@ public class SubscriptionHandler
     
     private async Task SendUpdateSubscriptionLink()
     {
-        var idOrCode = InputHelper.GetInput("Enter Subscription Id or Code: ");
+        var idOrCode = Prompt.Input<string>("Enter Subscription Id or Code", validators: [Validators.Required()]);
         var response = await _subscriptionService.SendUpdateSubscriptionLinkAsync(idOrCode);
 
         if (response.Status)

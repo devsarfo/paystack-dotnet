@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 using Paystack.NET.Constants;
-using Paystack.NET.Examples.Utils;
 using Paystack.NET.Models.Transactions.Options;
 using Paystack.NET.Services.Transaction;
+using Sharprompt;
 
 namespace Paystack.NET.Examples.Handlers;
 
@@ -12,64 +12,62 @@ public class TransactionHandler
 
     public async Task Init()
     {
-        Console.WriteLine("\n--- Transactions ---");
-        Console.WriteLine("1. Initialize Transaction");
-        Console.WriteLine("2. Verify Transaction");
-        Console.WriteLine("3. List Transactions");
-        Console.WriteLine("4. Fetch Transaction");
-        Console.WriteLine("5. Charge Authorization");
-        Console.WriteLine("6. Transaction Timeline");
-        Console.WriteLine("7. Transaction Totals");
-        Console.WriteLine("8. Export Transaction");
-        Console.WriteLine("9. Partial Debit");
-        Console.Write("Select an option: ");
+        Console.Clear();
+        Console.WriteLine("--- Transactions ---");
 
-        var choice = Console.ReadLine()?.Trim();
+        var option = Prompt.Select("Select an option", [
+            "Initialize Transaction",
+            "Verify Transaction",
+            "List Transactions",
+            "Fetch Transaction",
+            "Charge Authorization",
+            "Transaction Timeline",
+            "Transaction Totals",
+            "Export Transaction",
+            "Partial Debit"
+        ]);
 
         Console.Clear();
 
         try
         {
-            switch (choice)
+            switch (option)
             {
-                case "1":
+                case "Initialize Transaction":
                     Console.WriteLine("--- Initialize Transaction ---\n");
                     await InitializeTransaction();
                     break;
-                case "2":
+                case "Verify Transaction":
                     Console.WriteLine("--- Verify Transaction ---\n");
                     await VerifyTransaction();
                     break;
-                case "3":
+                case "List Transactions":
                     Console.WriteLine("--- List Transactions---\n");
                     await ListTransactions();
                     break;
-                case "4":
+                case "Fetch Transaction":
                     Console.WriteLine("--- Get Transaction ---\n");
                     await GetTransaction();
                     break;
-                case "5":
+                case "Charge Authorization":
                     Console.WriteLine("--- Charge Authorization ---\n");
                     await ChargeAuthorization();
                     break;
-                case "6":
+                case "Transaction Timeline":
                     Console.WriteLine("--- Transaction Timeline ---\n");
                     await TransactionTimeline();
                     break;
-                case "7":
+                case "Transaction Totals":
                     Console.WriteLine("--- Transaction Totals ---\n");
                     await TransactionTotals();
                     break;
-                case "8":
+                case "Export Transaction":
                     Console.WriteLine("--- Export Transaction ---\n");
                     await ExportTransaction();
                     break;
-                case "9":
+                case "Partial Debit":
                     Console.WriteLine("--- Partial Debit ---\n");
                     await PartialDebit();
-                    break;
-                default:
-                    Console.WriteLine("Invalid option. Please try again.");
                     break;
             }
         }
@@ -81,9 +79,8 @@ public class TransactionHandler
 
     private async Task InitializeTransaction()
     {
-        var email = InputHelper.GetInput("Enter E-mail Address: ");
-        var amountString = InputHelper.GetInput("Enter Amount (in subunit): ");
-        var amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : 500;
+        var email = Prompt.Input<string>("Enter E-mail Address", validators: [Validators.Required()]);
+        var amount = Prompt.Input<int>("Enter Amount (in subunit)", validators: [Validators.Required()]);
         var reference = "TEST-" + DateTime.Now.ToString("yyyyMMddHHmmss");
 
         var response = await _transactionService.InitializeAsync(new InitializeTransactionOptions
@@ -110,7 +107,7 @@ public class TransactionHandler
 
     private async Task VerifyTransaction()
     {
-        var reference = InputHelper.GetInput("Enter Reference: ");
+        var reference = Prompt.Input<string>("Enter Reference", validators: [Validators.Required()]);
         var response = await _transactionService.VerifyAsync(reference);
 
         if (response.Status)
@@ -139,11 +136,8 @@ public class TransactionHandler
 
     private async Task ListTransactions()
     {
-        var perPageString = InputHelper.GetInput("Enter Transactions Per Page (default 50): ", true);
-        var perPage = int.TryParse(perPageString, out var parsedPerPage) ? parsedPerPage : 50;
-
-        var pageString = InputHelper.GetInput("Enter Page (default 1): ", true);
-        var page = int.TryParse(pageString, out var parsedPage) ? parsedPage : 1;
+        var perPage = Prompt.Input<int>("Enter Transactions Per Page (default 50)", 50);
+        var page = Prompt.Input<int>("Enter Page (default 1)", 1);
 
         var response = await _transactionService.ListAsync(new ListTransactionsOptions
         {
@@ -180,7 +174,7 @@ public class TransactionHandler
 
     private async Task GetTransaction()
     {
-        var id = InputHelper.GetInput("Enter Transaction ID: ");
+        var id = Prompt.Input<string>("Enter Transaction ID", validators: [Validators.Required()]);
         var response = await _transactionService.FetchAsync(id);
 
         if (response.Status)
@@ -209,10 +203,9 @@ public class TransactionHandler
 
     private async Task ChargeAuthorization()
     {
-        var email = InputHelper.GetInput("Enter E-mail Address: ");
-        var amountString = InputHelper.GetInput("Enter Amount (in subunit): ");
-        var amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : 500;
-        var authorizationCode = InputHelper.GetInput("Enter Authorization Code: ");
+        var email = Prompt.Input<string>("Enter E-mail Address", validators: [Validators.Required()]);
+        var amount = Prompt.Input<int>("Enter Amount (in subunit)", validators: [Validators.Required()]);
+        var authorizationCode = Prompt.Input<string>("Enter Authorization Code", validators: [Validators.Required()]);
 
         var response = await _transactionService.ChargeAuthorizationAsync(new ChargeAuthorizationOptions
         {
@@ -247,7 +240,7 @@ public class TransactionHandler
 
     private async Task TransactionTimeline()
     {
-        var idOrReference = InputHelper.GetInput("Enter Transaction ID or Reference: ");
+        var idOrReference = Prompt.Input<string>("Enter Transaction ID or Reference", validators: [Validators.Required()]);
         var response = await _transactionService.TransactionTimelineAsync(idOrReference);
 
         if (response.Status)
@@ -318,12 +311,9 @@ public class TransactionHandler
 
     private async Task ExportTransaction()
     {
-        var perPageString = InputHelper.GetInput("Enter Transactions Per Page (default 50): ", true);
-        var perPage = int.TryParse(perPageString, out var parsedPerPage) ? parsedPerPage : 50;
-
-        var pageString = InputHelper.GetInput("Enter Page (default 1): ", true);
-        var page = int.TryParse(pageString, out var parsedPage) ? parsedPage : 1;
-
+        var perPage = Prompt.Input<int>("Enter Transactions Per Page (default 50)", 50);
+        var page = Prompt.Input<int>("Enter Page (default 1)", 1);
+        
         var response = await _transactionService.ExportTransactionAsync(new ExportTransactionOptions
         {
             PerPage = perPage,
@@ -344,13 +334,12 @@ public class TransactionHandler
 
     private async Task PartialDebit()
     {
-        var email = InputHelper.GetInput("Enter E-mail Address: ");
-        var amountString = InputHelper.GetInput("Enter Amount (in subunit): ");
-        var amount = int.TryParse(amountString, out var parsedAmount) ? parsedAmount : 500;
-        var authorizationCode = InputHelper.GetInput("Enter Authorization Code: ");
+        var email = Prompt.Input<string>("Enter E-mail Address", validators: [Validators.Required()]);
+        var amount = Prompt.Input<int>("Enter Amount (in subunit)", validators: [Validators.Required()]);
+        var authorizationCode = Prompt.Input<string>("Enter Authorization Code", validators: [Validators.Required()]);
         var reference = "TEST-" + DateTime.Now.ToString("yyyyMMddHHmmss");
 
-        InputHelper.GetInput("Enter Minimum Amount to Charge: ");
+        Prompt.Input<string>("Enter Minimum Amount to Charge", validators: [Validators.Required()]);
         var atLeast = Console.ReadLine();
 
         var response = await _transactionService.PartialDebitAsync(new PartialDebitOptions

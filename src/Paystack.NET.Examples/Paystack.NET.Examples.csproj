@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Paystack.NET\Paystack.NET.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Sharprompt" Version="3.0.0" />
+    </ItemGroup>
+
 </Project>
