@@ -111,7 +111,7 @@ catch (UnauthorizedAccessException)
 For any requests, bug or comments, please [open an issue][issues] or [submit a
 pull request][pulls].
 
-[example-project]: https://github.com/devsarfo/paystack-dotnet/blob/main/Paystack.NET.Examples
+[example-project]: https://github.com/devsarfo/paystack-dotnet/blob/main/src/Paystack.NET.Examples
 [api-docs]: https://paystack.com/docs/api
 [api-keys]: https://dashboard.paystack.com/#/settings/developers
 [dotnet-core-cli-tools]: https://docs.microsoft.com/en-us/dotnet/core/tools/
